@@ -1,0 +1,3054 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>起業応援セットプラン ヒアリングフォーム</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F1EFE9;
+    --primary: #006D93;
+    --text: #01141C;
+    --border: #C8C4BB;
+    --white: #ffffff;
+    --error: #C0392B;
+    --btn-height: 52px;
+    --max-width: 800px;
+    --sp-padding: 15px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* 画像モーダル */
+  .img-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+  .img-modal-overlay.active {
+    display: flex;
+  }
+  .img-modal-inner {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+  .img-modal-inner img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    display: block;
+  }
+  .img-modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: #fff;
+    font-size: 32px;
+    cursor: pointer;
+    line-height: 1;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Zen Old Mincho', serif;
+    min-height: 100vh;
+    padding: 40px var(--sp-padding);
+  }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Header */
+  .form-header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .form-header h1 {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .form-header p {
+    color: var(--text);
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+  }
+
+  /* Progress */
+  .progress-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0;
+    margin-bottom: 48px;
+    padding: 0;
+    position: relative;
+  }
+
+  .progress-row {
+    display: contents;
+  }
+
+  /* PCでは最後のprogress-stepのみ線なし */
+  .progress-bar > .progress-row:last-child > .progress-step:last-child::after {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    .progress-bar {
+      flex-direction: column;
+      gap: 12px;
+    }
+    .progress-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      position: relative;
+      width: 100%;
+    }
+  }
+
+  .progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .progress-step::after {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    z-index: 0;
+  }
+
+  .progress-bar > .progress-row:last-child > .progress-step:last-child::after {
+    display: none;
+  }
+
+  .progress-step.active::after,
+  .progress-step.done::after {
+    background: var(--primary);
+  }
+
+  .step-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--border);
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+
+  .progress-step.active .step-circle {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+  }
+
+  .progress-step.done .step-circle {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+  }
+
+  .step-label {
+    font-size: 9px;
+    color: var(--border);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+    text-align: center;
+    max-width: 56px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .progress-step.active .step-label,
+  .progress-step.done .step-label {
+    color: var(--primary);
+  }
+
+  .progress-step.done .step-circle,
+  .progress-step.active .step-circle {
+    cursor: pointer;
+  }
+  .progress-step.done .step-circle:hover {
+    transform: scale(1.1);
+  }
+
+  /* フリーメイトレイアウト */
+  .freemate-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .freemate-text {
+    flex: 1;
+  }
+  .freemate-img-wrap {
+    flex-shrink: 0;
+    width: 180px;
+  }
+
+  @media (max-width: 600px) {
+    .freemate-layout {
+      flex-direction: column;
+    }
+    .freemate-img-wrap {
+      width: 100%;
+      order: -1;
+    }
+    .freemate-text {
+      order: 1;
+    }
+  }
+
+  /* Step Content */
+  .step { display: none; }
+  .step.active { display: block; }
+
+  .step-title {
+    color: var(--primary);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .step-desc {
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+    opacity: 0.8;
+  }
+
+  /* Plan Cards */
+  .plan-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .plan-card {
+    border: 1px solid var(--border);
+    background: var(--white);
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .plan-card:hover { border-color: var(--primary); }
+  .plan-card.selected { border-color: var(--primary); background: #EBF5FA; }
+
+  .plan-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .plan-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .radio-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .plan-card.selected .radio-indicator {
+    border-color: var(--primary);
+    background: var(--primary);
+  }
+
+  .plan-card.selected .radio-indicator::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--white);
+  }
+
+  .plan-card-title {
+    color: var(--primary);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .plan-card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .plan-card-text {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.8;
+    opacity: 0.8;
+  }
+
+  .plan-card-image-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .plan-card-image-wrap img {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    display: block;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .plan-card-image-wrap img:hover {
+    opacity: 0.85;
+  }
+
+  .plan-card-link {
+    font-size: 12px;
+    color: var(--primary);
+    text-decoration: underline;
+    text-align: right;
+    display: block;
+  }
+
+  .plan-card-tag {
+    display: inline-block;
+    font-size: 10px;
+    color: var(--white);
+    background: var(--primary);
+    padding: 2px 8px;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  .plan-card-genre {
+    font-size: 11px;
+    color: var(--text);
+    opacity: 0.6;
+    margin-top: 4px;
+  }
+
+  .plan-sections {
+    margin-bottom: 8px;
+  }
+
+  .plan-sections strong {
+    display: block;
+    font-size: 11px;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    opacity: 1;
+  }
+
+  .plan-optional {
+    font-size: 11px;
+    color: var(--text);
+    opacity: 0.6;
+  }
+
+  /* 店舗説明ボックス */
+  .store-guide {
+    padding: 0 0 24px 0;
+    margin-bottom: 24px;
+    font-size: 13px;
+    line-height: 2;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .store-guide-title {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  .store-guide-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .store-guide-label {
+    font-weight: 700;
+    color: var(--primary);
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+
+  .store-section-divider {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.08em;
+    margin: 8px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (max-width: 480px) {
+    .plan-card-inner { flex-direction: column; }
+    .plan-card-image-wrap { width: 100%; }
+    .plan-card-image-wrap img { height: 180px; }
+  }
+
+  .plan-notice {
+    background: #FFF8F0;
+    border: 1px solid #E8D5B0;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    font-size: 12px;
+    line-height: 2;
+    color: var(--text);
+  }
+
+  .plan-notice strong {
+    display: block;
+    color: var(--primary);
+    font-size: 13px;
+    margin-bottom: 0;
+    letter-spacing: 0.05em;
+  }
+
+  /* STEP0 */
+  .step0-wrap {
+    margin-bottom: 32px;
+  }
+
+  .step0-notice {
+    padding: 16px 24px;
+    background: #EBF5FA;
+    border-left: 3px solid var(--primary);
+    margin-bottom: 24px;
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--text);
+  }
+
+  .step0-notice p {
+    margin: 0 0 6px;
+  }
+
+  .step0-notice p:last-child {
+    margin: 0;
+  }
+
+  .step0-notice strong {
+    color: var(--primary);
+  }
+
+  .step0-check-wrap {
+    padding: 0 0 8px;
+  }
+
+  .step0-check-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
+
+  .step0-check-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .step0-check-card:hover {
+    border-color: var(--primary);
+  }
+
+  .step0-check-card.selected {
+    border-color: var(--primary);
+    background: #EBF5FA;
+  }
+
+  .step0-check-indicator {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .step0-check-card.selected .step0-check-indicator {
+    border-color: var(--primary);
+    background: var(--primary);
+  }
+
+  .step0-check-card.selected .step0-check-indicator::after {
+    content: '✓';
+    color: var(--white);
+    font-size: 12px;
+  }
+
+  .step0-check-label {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .step0-alert {
+    background: #FFF3F3;
+    border-left: 3px solid #C0392B;
+    padding: 14px 18px;
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .step0-alert-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #C0392B;
+    margin-bottom: 6px;
+  }
+
+  .step0-alert-price {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .step0-alert-price strong {
+    color: #C0392B;
+    font-size: 15px;
+  }
+
+  .step0-alert strong {
+    color: #C0392B;
+  }
+
+  .step0-hidden {
+    display: none;
+  }
+
+  /* セットプラン内容ブロック */
+  .plan-set-block {
+    margin-bottom: 40px;
+    border: 1px solid var(--border);
+    background: var(--white);
+  }
+
+  .plan-set-image-wrap {
+    width: 100%;
+    aspect-ratio: 1280 / 750;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .plan-set-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #E8E4DC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #999;
+    letter-spacing: 0.1em;
+  }
+
+  .plan-set-title {
+    padding: 16px 24px 8px 32px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+  }
+
+  .plan-set-list {
+    list-style: none;
+    padding: 0 24px 24px 24px;
+    margin: 0;
+  }
+
+  .plan-set-list li {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.8;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .plan-set-list li:last-child {
+    border-bottom: none;
+  }
+
+  .plan-set-list li {
+    display: block;
+  }
+
+  .plan-set-item-name {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 13px;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .plan-set-item-name::before {
+    content: '';
+    color: var(--primary);
+    margin-right: 8px;
+  }
+
+  .plan-set-item-desc {
+    display: block;
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.8;
+    padding-left: 18px;
+    margin-bottom: 4px;
+  }
+
+  /* Zoom Option */
+  .zoom-option {
+    border: 1px dashed var(--border);
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .zoom-option:hover { border-color: var(--primary); }
+  .zoom-option.selected { border-color: var(--primary); background: #EBF5FA; }
+
+  .zoom-option-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .checkbox-indicator {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .zoom-option.selected .checkbox-indicator {
+    border-color: var(--primary);
+    background: var(--primary);
+  }
+
+  .zoom-option.selected .checkbox-indicator::after {
+    content: '✓';
+    color: var(--white);
+    font-size: 12px;
+  }
+
+  .zoom-option-title {
+    color: var(--primary);
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .zoom-option-body {
+    padding-left: 32px;
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.8;
+    opacity: 0.7;
+  }
+
+  /* Form Fields */
+  .section-block {
+    margin-bottom: 40px;
+  }
+
+  .section-block-title {
+    color: var(--primary);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--primary);
+    margin-bottom: 24px;
+  }
+
+  .field {
+    margin-bottom: 24px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: 0.03em;
+  }
+
+  .field label .required {
+    display: none;
+  }
+
+  .field label .optional {
+    color: var(--text);
+    font-size: 11px;
+    margin-left: 4px;
+    opacity: 0.5;
+  }
+
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="tel"],
+  .field input[type="url"],
+  .field textarea,
+  .field select {
+    width: 100%;
+    height: var(--btn-height);
+    padding: 0 16px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+
+  .field textarea {
+    height: auto;
+    min-height: 120px;
+    padding: 12px 16px;
+    resize: vertical;
+    line-height: 1.7;
+  }
+
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    border-color: var(--primary);
+  }
+
+  .field-hint {
+    font-size: 11px;
+    color: var(--text);
+    opacity: 0.6;
+    margin-top: 6px;
+    line-height: 1.6;
+  }
+
+  /* Radio / Checkbox groups */
+  .radio-group, .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .radio-item, .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+  .radio-item input, .checkbox-item input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  /* Notice box */
+  .notice-box {
+    background: #EBF5FA;
+    border-left: 3px solid var(--primary);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    line-height: 2;
+    color: var(--text);
+  }
+
+  /* Service fields */
+  .service-group {
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin-bottom: 16px;
+    background: var(--white);
+  }
+
+  .service-group-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Optional section toggle */
+  .optional-section {
+    border: 1px dashed var(--border);
+    margin-bottom: 16px;
+  }
+
+  .optional-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.03em;
+  }
+
+  .optional-toggle input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+  }
+
+  .optional-content {
+    display: none;
+    padding: 0 20px 20px;
+  }
+
+  .optional-content.open { display: block; }
+
+  /* Buttons */
+  .btn-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 40px;
+    justify-content: space-between;
+  }
+
+  .btn-row .btn-primary:only-child {
+    margin-left: auto;
+  }
+
+  .btn {
+    height: var(--btn-height);
+    padding: 0 32px;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: var(--white);
+    min-width: 160px;
+  }
+
+  .btn-primary:hover { background: #005578; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    min-width: 120px;
+  }
+
+  .btn-secondary:hover { background: #EBF5FA; }
+
+  /* Confirm screen */
+  .confirm-section {
+    margin-bottom: 32px;
+  }
+
+  .confirm-section-title {
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .confirm-row {
+    display: flex;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid #E8E4DC;
+    font-size: 13px;
+  }
+
+  .confirm-label {
+    width: 160px;
+    flex-shrink: 0;
+    color: var(--text);
+    opacity: 0.6;
+    font-size: 12px;
+  }
+
+  .confirm-value {
+    color: var(--text);
+    line-height: 1.7;
+    flex: 1;
+    word-break: break-all;
+  }
+
+  /* Complete */
+  .complete-screen {
+    text-align: center;
+    padding: 80px 0;
+  }
+
+  .complete-screen h2 {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+
+  .complete-screen p {
+    font-size: 14px;
+    line-height: 2;
+    color: var(--text);
+    opacity: 0.8;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 0;
+  }
+
+  /* Option cards */
+  .option-card {
+    border: 1px solid var(--border);
+    background: var(--white);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .option-card:hover { border-color: var(--primary); }
+  .option-card.selected { border-color: var(--primary); background: #EBF5FA; }
+
+  .option-card.selected .checkbox-indicator {
+    border-color: var(--primary);
+    background: var(--primary);
+  }
+
+  .option-card.selected .checkbox-indicator::after {
+    content: '✓';
+    color: var(--white);
+    font-size: 12px;
+  }
+
+  .option-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .option-card-title {
+    color: var(--primary);
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .option-card-price {
+    margin-left: auto;
+    color: var(--primary);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .option-card-body {
+    padding-left: 32px;
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.9;
+    opacity: 0.7;
+  }
+
+  /* フッター金額 */
+  .price-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--text);
+    color: var(--white);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+    font-family: 'Zen Old Mincho', serif;
+  }
+
+  @media (max-width: 600px) {
+    .price-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding: 10px 16px;
+    }
+    .price-footer-amount {
+      font-size: 16px;
+    }
+    #priceBreakdown {
+      margin-left: 0 !important;
+      font-size: 10px !important;
+    }
+  }
+
+  .price-footer-label {
+    font-size: 12px;
+    opacity: 0.7;
+    letter-spacing: 0.05em;
+  }
+
+  .price-footer-amount {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--white);
+  }
+
+  .price-footer-detail {
+    font-size: 11px;
+    opacity: 0.6;
+    margin-left: 8px;
+  }
+
+  body {
+    padding-bottom: 80px;
+  }
+
+  /* STEP4 提出方法カード */
+  .step4-method-card {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px;
+    border: 2px solid var(--border);
+    background: var(--white);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .step4-method-card:hover {
+    border-color: var(--primary);
+  }
+  .step4-method-card.selected {
+    border-color: var(--primary);
+    background: #EBF5FA;
+  }
+  .step4-method-radio {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .step4-method-card.selected .step4-method-radio {
+    border-color: var(--primary);
+    background: var(--primary);
+    box-shadow: inset 0 0 0 3px var(--white);
+  }
+  .step4-method-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .step4-method-desc {
+    font-size: 12px;
+    color: var(--text);
+    opacity: 0.7;
+  }
+  .step4-method-recommend {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 20px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  /* 名刺カード専用 */
+  #cardDesignCards .plan-card-header {
+    margin-bottom: 12px;
+  }
+</style>
+</head>
+<body>
+
+<!-- 金額フッター -->
+<div class="price-footer">
+  <div>
+    <div class="price-footer-label">見積もり金額</div>
+    <div style="display:flex;align-items:baseline;gap:8px;">
+      <span style="font-size:11px;opacity:0.5;text-decoration:line-through;">235,400円</span>
+      <span style="font-size:11px;color:#FF8C00;font-weight:700;">30%OFF</span>
+      <span class="price-footer-amount" id="totalPrice">165,000円</span>
+      <span class="price-footer-detail">（税込）</span>
+    </div>
+  </div>
+  <div id="priceBreakdown" style="font-size:11px;opacity:0.6;margin-left:16px;line-height:1.8;">起業応援セットプラン 165,000円</div>
+</div>
+
+<div id="imgModalOverlay" class="img-modal-overlay">
+  <div class="img-modal-inner">
+    <button class="img-modal-close" onclick="closeImgModal()">✕</button>
+    <img id="imgModalImg" src="" alt="拡大画像">
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="form-header">
+    <h1>起業応援セットプラン５<br>ヒアリングフォーム</h1>
+    <p>全項目をご記入の上、送信してください</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-row">
+      <div class="progress-step active" data-step="0">
+        <div class="step-circle" style="cursor:pointer;" onclick="backToStep0()">0</div>
+        <div class="step-label">プラン確認</div>
+      </div>
+      <div class="progress-step" data-step="1">
+        <div class="step-circle">1</div>
+        <div class="step-label">プラン選択</div>
+      </div>
+      <div class="progress-step" data-step="2">
+        <div class="step-circle">2</div>
+        <div class="step-label">基本情報</div>
+      </div>
+      <div class="progress-step" data-step="3">
+        <div class="step-circle">3</div>
+        <div class="step-label">サイト情報</div>
+      </div>
+      <div class="progress-step" data-step="4">
+        <div class="step-circle">4</div>
+        <div class="step-label">画像提出</div>
+      </div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-step" data-step="5">
+        <div class="step-circle">5</div>
+        <div class="step-label">印鑑</div>
+      </div>
+    <div class="progress-step" data-step="6">
+      <div class="step-circle">6</div>
+      <div class="step-label">名刺</div>
+    </div>
+    <div class="progress-step" data-step="7">
+      <div class="step-circle">7</div>
+      <div class="step-label">オプション</div>
+    </div>
+    <div class="progress-step" data-step="8">
+      <div class="step-circle">8</div>
+      <div class="step-label">確認</div>
+    </div>
+    </div>
+  </div>
+
+<!-- STEP 0 -->
+  <div class="step0-wrap" id="step0">
+    <div class="plan-set-block">
+      <div class="plan-set-image-wrap">
+        <div class="plan-set-image-placeholder">写真</div>
+      </div>
+      <div style="margin:0 0 4px 0;padding:12px 32px;background:#EBF5FA;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="color:#006D93;opacity:0.8;font-size:13px;">通常価格合計</span>
+        <span style="color:#006D93;opacity:0.8;font-size:13px;text-decoration:line-through;">235,400円（税込）</span>
+        <span style="color:#FF8C00;font-weight:700;font-size:13px;">→ 30%OFF</span>
+        <span style="color:#006D93;opacity:0.8;font-size:13px;">セット価格</span>
+        <span style="color:#006D93;font-weight:700;font-size:16px;">165,000円（税込）</span>
+      </div>
+      <div class="plan-set-title">起業応援セットプラン５！に含まれるもの</div>
+      <ul class="plan-set-list">
+        <li>
+          <span class="plan-set-item-name">① 薩摩本柘(国産) 法人用３本セット</span>
+          <span class="plan-set-item-desc">銀行印・実印・角印の3本セット（印鑑ケース付き）。起業に必要な印鑑が一式揃います。</span>
+        </li>
+        <li>
+          <span class="plan-set-item-name">② 組み合わせゴム印(フリーメイト) 5枚</span>
+          <span class="plan-set-item-desc">住所・会社名・氏名・電話番号・インボイス番号を組み合わせて使えるゴム印。書類・封筒への押印がスムーズになります。</span>
+        </li>
+        <li>
+          <span class="plan-set-item-name">③ 本格名刺デザイン&amp;印刷100枚セット(両面) <span style="background:#E8F4F0;color:#0F6E56;font-size:11px;padding:2px 4px;border-radius:4px;font-weight:500;display:inline-block;">プロデザイナー担当</span></span>
+          <span class="plan-set-item-desc">起業のスタートに欠かせない名刺を100枚お届け。初めての対面・商談の場で自信を持って渡せます。</span>
+        </li>
+        <li>
+          <span class="plan-set-item-name">④ ホームページ1枚(LP) <span style="background:#E8F4F0;color:#0F6E56;font-size:11px;padding:2px 4px;border-radius:4px;font-weight:500;display:inline-block;">プロデザイナー担当</span></span>
+          <span class="plan-set-item-desc">起業初日から使えるホームページ。あなたのサービス・想い・連絡先を1ページにまとめ、ビジネスの第一歩を支えます。</span>
+        </li>
+        <li>
+          <span class="plan-set-item-name">⑤ ヘアメイクつきプロフィール写真撮影会(LST)</span>
+          <span class="plan-set-item-desc">起業・事業に必要な経営者プロフィール写真をプロが撮影。撮影データはインタビュー制作にも活用でき、弊社のオウンドメディアでご紹介します。（LEADING STYLE TOKYO）</span>
+        </li>
+      </ul>
+    </div>
+    <div class="step0-check-wrap">
+      <div class="step0-check-title">上記のプラン内容をご確認の上、あてはまる方を選んでください。</div>
+
+      <label class="step0-check-card" id="check_card_a" onclick="selectIntent('a')">
+        <div class="step0-check-indicator" id="check_ind_a"></div>
+        <div class="step0-check-text">
+          <div class="step0-check-label">起業応援セットプランの内容だけで進めたい</div>
+        </div>
+      </label>
+
+      <label class="step0-check-card" id="check_card_b" onclick="selectIntent('b')">
+        <div class="step0-check-indicator" id="check_ind_b"></div>
+        <div class="step0-check-text">
+          <div class="step0-check-label" style="font-size:13.5px;">オンライン相談希望（1回 1時間 ＋5,000円）</div>
+          <div style="font-size:12px;color:var(--text);opacity:0.7;margin-top:4px;">どのデザインにすべきか迷っている／サイトのイメージや質問項目を相談しながら決めたい／サイトページ追加・独自ドメイン設定・Googleアナリティクス設定をご希望の場合（起業応援プラン内には含まれません）</div>
+        </div>
+      </label>
+
+      <div id="intent_msg_b" style="display:none;" class="step0-alert">
+        打ち合わせをよりスムーズに進めるため、基本情報とZoom日程の候補をできる限りご入力ください。不明な部分は空欄のまま送信いただいて構いません。
+      </div>
+
+      <div id="intent_btn_a" style="display:none;" class="btn-row" style="justify-content:flex-end;">
+        <button class="btn btn-primary" onclick="startForm()">このプランで申し込む　→</button>
+      </div>
+
+      <div id="intent_btn_b" style="display:none;" class="btn-row" style="justify-content:flex-end;">
+        <button class="btn btn-primary" onclick="startZoom()">基本情報を入力する　→</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step" id="step1">
+    <div class="step-title">STEP 1　プラン選択</div>
+    <div class="step-desc">制作するサイトのプランをお選びください。</div>
+
+    <!-- 店舗あり・なしの説明 -->
+    <div class="store-guide">
+      <div class="store-guide-title">プランを選ぶ前にご確認ください</div>
+      <div style="margin-bottom:12px;">
+        <div style="font-weight:700;font-size:13px;color:var(--text);margin-bottom:2px;">店舗あり</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.8;">実際にお客様にご来店いただく場所がある方　例：美容室・エステ・整体・ネイル・カフェ・飲食店など</div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="font-weight:700;font-size:13px;color:var(--text);margin-bottom:2px;">店舗なし</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.8;">来店不要でサービスを提供している方　例：コンサル・コーチング・デザイナー・士業・フリーランスなど</div>
+      </div>
+      <div style="font-size:12px;color:var(--text);">※ご自身の業種に合わせてお選びください。店舗あり・なしのみ間違えないようご注意ください。</div>
+
+    </div>
+
+    <div class="plan-notice" style="margin-bottom:12px;">
+      <strong>デザインサンプルについて</strong>
+      サンプル選択後の質問項目をもとに、選んでいただいたデザインサンプルをベースとして、業種に合わせて内容・文章・写真・色・フォントなどを変更して制作します。構成（レイアウト）とアニメーションのみお好みでお選びください。
+    </div>
+    <div class="plan-notice" style="margin-bottom:20px;">
+      <strong>注意事項</strong>
+      — サイト完成後の確認・デザイン修正は1回まで（作り直し不可）<br>
+      — ノーコードSTUDIOの無料アカウントで制作・公開（公開初期費用0円）<br>
+      — サイトURLは「https://〇〇.studio.site」形式（サイト名は会社名から作ります）<br>
+      — 無料プランのため、サイト左下にSTUDIOの広告バーが表示されます<br>
+      — ニュース・ブログなどの更新機能はありません<br>
+      — サイトデータの譲渡・移管はできません<br>
+      — 保守管理はありませんが、デザイナーのアカウントで安全に制作・保管します
+    </div>
+
+    <div class="plan-cards" id="planCards">
+
+      <!-- 店舗あり -->
+      <div class="store-section-divider">店舗あり</div>
+
+      <!-- 店舗あり A：エレガント・プロフェッショナル -->
+      <label class="plan-card" onclick="selectPlan(this, 'store_a')">
+        <input type="radio" name="plan" value="store_a">
+        <div class="plan-card-header">
+          <div class="radio-indicator"></div>
+          <div class="plan-card-title">店舗ありデザインサンプル A</div>
+          <span class="plan-card-tag">エレガント・プロフェッショナル</span>
+        </div>
+        <div class="plan-card-inner">
+          <div class="plan-card-text">
+            <div class="plan-sections">
+              <strong>制作セクション</strong>
+              TOP／私たちについて（コンセプト・特徴・強み）／サービス・メニュー／アクセス・営業時間／お問い合わせ・予約
+            </div>
+            <div class="plan-optional">任意追加：来店の流れ／スタッフ紹介／お客様の声／代表者の挨拶<br>※ニュース・ブログ更新なし</div>
+            <div class="plan-card-genre">向いている業種例：士業・コンサル・不動産・金融・税理士・SNS運用</div>
+          </div>
+          <div class="plan-card-image-wrap">
+            <img id="step1_img_elegant" src="" alt="" style="width:100%;height:auto;display:none;border:1px solid var(--border);">
+            <div id="step1_placeholder_elegant" style="width:100%;height:360px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;border:1px solid var(--border);">画像</div>
+            <a class="plan-card-link" href="https://preview.studio.site/templates/exNWYobqlB" target="_blank" rel="noopener">サンプルサイトを見る ↗</a>
+          </div>
+        </div>
+      </label>
+
+      <!-- 店舗あり B：ナチュラル・ウェルネス -->
+      <label class="plan-card" onclick="selectPlan(this, 'store_b')">
+        <input type="radio" name="plan" value="store_b">
+        <div class="plan-card-header">
+          <div class="radio-indicator"></div>
+          <div class="plan-card-title">店舗ありデザインサンプル B</div>
+          <span class="plan-card-tag">ナチュラル・ウェルネス</span>
+        </div>
+        <div class="plan-card-inner">
+          <div class="plan-card-text">
+            <div class="plan-sections">
+              <strong>制作セクション</strong>
+              TOP／私たちについて（コンセプト・特徴・強み）／サービス・メニュー／アクセス・営業時間／お問い合わせ・予約
+            </div>
+            <div class="plan-optional">任意追加：来店の流れ／スタッフ紹介／お客様の声／代表者の挨拶<br>※ニュース・ブログ更新なし</div>
+            <div class="plan-card-genre">向いている業種例：エステ・整体・ヨガ・美容・セラピスト</div>
+          </div>
+          <div class="plan-card-image-wrap">
+            <img id="step1_img_natural" src="" alt="" style="width:100%;height:auto;display:none;border:1px solid var(--border);">
+            <div id="step1_placeholder_natural" style="width:100%;height:360px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;border:1px solid var(--border);">画像</div>
+            <a class="plan-card-link" id="step1_img_natural_wrap" href="https://preview.studio.site/templates/ZM3aAK7Oeg" target="_blank" rel="noopener">サンプルサイトを見る ↗</a>
+          </div>
+        </div>
+      </label>
+
+      <!-- 店舗あり C：ラグジュアリー・グルメ -->
+      <label class="plan-card" onclick="selectPlan(this, 'store_c')">
+        <input type="radio" name="plan" value="store_c">
+        <div class="plan-card-header">
+          <div class="radio-indicator"></div>
+          <div class="plan-card-title">店舗ありデザインサンプル C</div>
+          <span class="plan-card-tag">ラグジュアリー・グルメ</span>
+        </div>
+        <div class="plan-card-inner">
+          <div class="plan-card-text">
+            <div class="plan-sections">
+              <strong>制作セクション</strong>
+              TOP／私たちについて（コンセプト・特徴・強み）／サービス・メニュー／アクセス・営業時間／お問い合わせ・予約
+            </div>
+            <div class="plan-optional">任意追加：来店の流れ／スタッフ紹介／お客様の声／代表者の挨拶<br>※ニュース・ブログ更新なし</div>
+            <div class="plan-card-genre">向いている業種例：レストラン・カフェ・バー・ホテル・料亭</div>
+          </div>
+          <div class="plan-card-image-wrap">
+            <img id="step1_img_luxury" src="" alt="" style="width:100%;height:auto;display:none;border:1px solid var(--border);">
+            <div id="step1_placeholder_luxury" style="width:100%;height:360px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;border:1px solid var(--border);">画像</div>
+            <a class="plan-card-link" id="step1_img_luxury_wrap" href="https://preview.studio.site/templates/9xPORPyarR" target="_blank" rel="noopener">サンプルサイトを見る ↗</a>
+          </div>
+        </div>
+      </label>
+
+      <!-- 店舗なし -->
+      <div class="store-section-divider" style="margin-top:24px;">店舗なし</div>
+
+      <!-- 店舗なし A：クリエイティブ・モダン -->
+      <label class="plan-card" onclick="selectPlan(this, 'nostore_a')">
+        <input type="radio" name="plan" value="nostore_a">
+        <div class="plan-card-header">
+          <div class="radio-indicator"></div>
+          <div class="plan-card-title">店舗なしデザインサンプル A</div>
+          <span class="plan-card-tag">クリエイティブ・モダン</span>
+        </div>
+        <div class="plan-card-inner">
+          <div class="plan-card-text">
+            <div class="plan-sections">
+              <strong>制作セクション</strong>
+              TOP／私たちについて（コンセプト・特徴・強み）／サービス内容／会社概要／お問い合わせ
+            </div>
+            <div class="plan-optional">任意追加：実績・事例／ご利用の流れ／お客様の声／よくある質問<br>※ニュース・ブログ更新なし</div>
+            <div class="plan-card-genre">向いている業種例：デザイナー・Web制作・クリエイター・IT系</div>
+          </div>
+          <div class="plan-card-image-wrap">
+            <img id="step1_img_creative" src="" alt="" style="width:100%;height:auto;display:none;border:1px solid var(--border);">
+            <div id="step1_placeholder_creative" style="width:100%;height:360px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;border:1px solid var(--border);">画像</div>
+            <a class="plan-card-link" id="step1_img_creative_wrap" href="https://preview.studio.site/templates/Q1YWjYKamG" target="_blank" rel="noopener">サンプルサイトを見る ↗</a>
+          </div>
+        </div>
+      </label>
+
+      <!-- 店舗なし B：スタイリッシュ・パーソナルブランド -->
+      <label class="plan-card" onclick="selectPlan(this, 'nostore_b')">
+        <input type="radio" name="plan" value="nostore_b">
+        <div class="plan-card-header">
+          <div class="radio-indicator"></div>
+          <div class="plan-card-title">店舗なしデザインサンプル B</div>
+          <span class="plan-card-tag">スタイリッシュ・パーソナルブランド</span>
+        </div>
+        <div class="plan-card-inner">
+          <div class="plan-card-text">
+            <div class="plan-sections">
+              <strong>制作セクション</strong>
+              TOP／私たちについて（コンセプト・特徴・強み）／サービス内容／会社概要／お問い合わせ
+            </div>
+            <div class="plan-optional">任意追加：実績・事例／ご利用の流れ／お客様の声／よくある質問<br>※ニュース・ブログ更新なし</div>
+            <div class="plan-card-genre">向いている業種例：コーチ・コンサル・講師・SNS運用・個人事業主</div>
+          </div>
+          <div class="plan-card-image-wrap">
+            <img id="step1_img_navy" src="" alt="" style="width:100%;height:auto;display:none;border:1px solid var(--border);">
+            <div id="step1_placeholder_navy" style="width:100%;height:360px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;border:1px solid var(--border);">画像</div>
+            <a class="plan-card-link" id="step1_img_navy_wrap" href="https://preview.studio.site/templates/7bXqz7DaDd" target="_blank" rel="noopener">サンプルサイトを見る ↗</a>
+          </div>
+        </div>
+      </label>
+
+      <!-- 店舗なし C：シャープ・ビジネス -->
+      <label class="plan-card" onclick="selectPlan(this, 'nostore_c')">
+        <input type="radio" name="plan" value="nostore_c">
+        <div class="plan-card-header">
+          <div class="radio-indicator"></div>
+          <div class="plan-card-title">店舗なしデザインサンプル C</div>
+          <span class="plan-card-tag">シャープ・ビジネス</span>
+        </div>
+        <div class="plan-card-inner">
+          <div class="plan-card-text">
+            <div class="plan-sections">
+              <strong>制作セクション</strong>
+              TOP／私たちについて（コンセプト・特徴・強み）／サービス内容／会社概要／お問い合わせ
+            </div>
+            <div class="plan-optional">任意追加：実績・事例／ご利用の流れ／お客様の声／よくある質問<br>※ニュース・ブログ更新なし</div>
+            <div class="plan-card-genre">向いている業種例：経営者・スタートアップ・新規事業・コンサルティング</div>
+          </div>
+          <div class="plan-card-image-wrap">
+            <img id="step1_img_sharp" src="" alt="" style="width:100%;height:auto;display:none;border:1px solid var(--border);">
+            <div id="step1_placeholder_sharp" style="width:100%;height:360px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;border:1px solid var(--border);">画像</div>
+            <a class="plan-card-link" id="step1_img_sharp_wrap" href="https://preview.studio.site/templates/EJgqe65akL" target="_blank" rel="noopener">サンプルサイトを見る ↗</a>
+          </div>
+        </div>
+      </label>
+
+
+
+
+
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="backToStep0()">戻る</button>
+      <button class="btn btn-primary" onclick="nextStep(1)">次へ進む</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step2">
+    <div class="step-title">STEP 2　基本情報</div>
+    <div class="step-desc">サイト・名刺制作に必要な基本情報をご記入ください。</div>
+
+    <div class="section-block">
+      <div class="section-block-title">TOP（ヒーロー）</div>
+
+      <div class="field">
+        <label>氏名（代表者名・契約者名）<span class="required">必須</span></label>
+        <input type="text" id="full_name" placeholder="例：山田 太郎">
+      </div>
+      <div class="field">
+        <label>屋号・会社名<span class="required">必須</span></label>
+        <input type="text" id="company_name" placeholder="例：株式会社〇〇 / 〇〇サロン">
+      </div>
+      <div class="field">
+        <label>肩書き<span class="required">必須</span></label>
+        <input type="text" id="title" placeholder="例：代表取締役 / 整体師">
+      </div>
+      <div class="field">
+        <label>業種<span class="required">必須</span></label>
+        <input type="text" id="industry" placeholder="例：整体院 / ウェブデザイン / コンサルティング">
+      </div>
+      <div class="field">
+        <label>メールアドレス：フォーム送信後の自動返信メールの送信先になります。<span class="required">必須</span></label>
+        <input type="email" id="email_address" placeholder="例：info@example.com">
+      </div>
+      <div class="field">
+        <label>電話番号<span class="required">必須</span></label>
+        <input type="tel" id="phone_number" placeholder="例：090-0000-0000">
+      </div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:8px 0 24px;">
+      <div class="field">
+        <label>どんな人に向けた仕事か<span class="required">必須</span></label>
+        <input type="text" id="target" placeholder="例：30代の働くママ / 中小企業の経営者">
+      </div>
+      <div class="field">
+        <label>その人が抱えている悩みや困りごと<span class="required">必須</span></label>
+        <textarea id="pain" placeholder="例：体の疲れが取れない、腰痛が続いている"></textarea>
+      </div>
+      <div class="field">
+        <label>関わることでどんな変化・結果が得られるか<span class="required">必須</span></label>
+        <textarea id="result" placeholder="例：痛みが改善され、毎日を快適に過ごせるようになる"></textarea>
+      </div>
+      <div class="field">
+        <label>キャッチコピー<span class="optional">任意</span></label>
+        <input type="text" id="catchcopy" placeholder="例：あなたの毎日を、もっと軽く。">
+      </div>
+      <div class="field">
+        <label>ベースカラーの希望<span class="required">必須</span></label>
+        <input type="text" id="base_color" placeholder="例：白・ベージュ・ネイビーなど">
+      </div>
+      <div class="field">
+        <label>使いたい色・避けたい色<span class="optional">任意</span></label>
+        <input type="text" id="color_note" placeholder="例：使いたい：ゴールド / 避けたい：赤">
+      </div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-block-title">私たちについて</div>
+      <div class="field">
+        <label>この仕事・事業を始めたきっかけ・想い<span class="required">必須</span></label>
+        <textarea id="story" placeholder="自由にご記入ください"></textarea>
+      </div>
+      <div class="field">
+        <label>大切にしていること・こだわり<span class="required">必須</span></label>
+        <textarea id="value" placeholder="自由にご記入ください"></textarea>
+      </div>
+      <div class="field">
+        <label>強み・特徴（3つ）<span class="required">必須</span></label>
+        <input type="text" id="strength1" placeholder="強み①" style="margin-bottom:8px;">
+        <input type="text" id="strength2" placeholder="強み②" style="margin-bottom:8px;">
+        <input type="text" id="strength3" placeholder="強み③">
+      </div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-block-title">サービス・メニュー</div>
+      <div class="notice-box">3つ程度ご記入ください。料金を載せない場合は空欄で構いません。</div>
+      <div class="service-group">
+        <div class="service-group-title">サービス①</div>
+        <div class="field"><label>サービス名<span class="required">必須</span></label><input type="text" id="s1_name" placeholder="例：全身整体60分"></div>
+        <div class="field"><label>内容説明<span class="required">必須</span></label><textarea id="s1_desc" placeholder="どんなサービスか簡単にご説明ください"></textarea></div>
+        <div class="field"><label>所要時間の目安<span class="optional">任意</span></label><input type="text" id="s1_time" placeholder="例：60分"></div>
+        <div class="field"><label>料金<span class="optional">任意</span></label><input type="text" id="s1_price" placeholder="例：8,000円（税込）"></div>
+      </div>
+      <div class="service-group">
+        <div class="service-group-title">サービス②</div>
+        <div class="field"><label>サービス名<span class="optional">任意</span></label><input type="text" id="s2_name" placeholder="例：首・肩集中ケア30分"></div>
+        <div class="field"><label>内容説明<span class="optional">任意</span></label><textarea id="s2_desc" placeholder="どんなサービスか簡単にご説明ください"></textarea></div>
+        <div class="field"><label>所要時間の目安<span class="optional">任意</span></label><input type="text" id="s2_time" placeholder="例：30分"></div>
+        <div class="field"><label>料金<span class="optional">任意</span></label><input type="text" id="s2_price" placeholder="例：4,500円（税込）"></div>
+      </div>
+      <div class="service-group">
+        <div class="service-group-title">サービス③</div>
+        <div class="field"><label>サービス名<span class="optional">任意</span></label><input type="text" id="s3_name" placeholder="例：回数券（5回分）"></div>
+        <div class="field"><label>内容説明<span class="optional">任意</span></label><textarea id="s3_desc" placeholder="どんなサービスか簡単にご説明ください"></textarea></div>
+        <div class="field"><label>所要時間の目安<span class="optional">任意</span></label><input type="text" id="s3_time" placeholder="例：−"></div>
+        <div class="field"><label>料金<span class="optional">任意</span></label><input type="text" id="s3_price" placeholder="例：35,000円（税込）"></div>
+      </div>
+      <div class="field">
+        <label>掲載したくない情報<span class="optional">任意</span></label>
+        <input type="text" id="no_publish" placeholder="例：料金は非公開にしたい">
+      </div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-block-title">お問い合わせ</div>
+      <div class="field">
+        <label>連絡手段<span class="required">必須</span></label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox" name="contact_method" value="LINE"> LINE</label>
+          <label class="checkbox-item"><input type="checkbox" name="contact_method" value="メール"> メール</label>
+          <label class="checkbox-item"><input type="checkbox" name="contact_method" value="電話"> 電話</label>
+          <label class="checkbox-item"><input type="checkbox" name="contact_method" value="フォーム"> お問い合わせフォーム</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>各連絡先（URL・アドレス・番号）<span class="required">必須</span></label>
+        <textarea id="contact_info" placeholder="例：LINE: https://lin.ee/〇〇&#10;メール: info@example.com&#10;電話: 090-0000-0000"></textarea>
+      </div>
+      <div class="field">
+        <label>返信・対応までの目安<span class="optional">任意</span></label>
+        <input type="text" id="reply_time" placeholder="例：2営業日以内">
+      </div>
+      <div class="field">
+        <label>受付時間の制限<span class="optional">任意</span></label>
+        <input type="text" id="reception_hours" placeholder="例：平日10:00〜18:00のみ">
+      </div>
+      <div class="field">
+        <label>問い合わせ前に伝えておきたいこと<span class="optional">任意</span></label>
+        <textarea id="contact_note" placeholder="例：初回は無料相談をお受けしています"></textarea>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-block-title">SNS・各種URL</div>
+      <div class="field">
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">Instagram</span><input type="url" id="sns_instagram" placeholder="https://www.instagram.com/〇〇" style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">X（Twitter）</span><input type="url" id="sns_x" placeholder="https://x.com/〇〇" style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">Facebook</span><input type="url" id="sns_facebook" placeholder="https://www.facebook.com/〇〇" style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">LINE</span><input type="url" id="sns_line" placeholder="https://lin.ee/〇〇" style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">YouTube</span><input type="url" id="sns_youtube" placeholder="https://www.youtube.com/〇〇" style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">その他</span><input type="text" id="sns_other" placeholder="サービス名：URL" style="flex:1;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep(2)">戻る</button>
+      <button class="btn btn-primary" onclick="nextStep(2)">次へ進む</button>
+    </div>
+  </div>
+
+  <!-- STEP ZOOM（Zoomモード専用） -->
+  <div class="step" id="stepzoom">
+    <div class="step-title">Zoom打ち合わせ　日程候補</div>
+    <div class="step-desc">ご希望の日時を3〜4候補ご記入ください。確認後こちらからご連絡します。</div>
+    <div class="notice-box" style="margin-bottom:8px;">オンライン相談料：<strong style="color:var(--primary);">5,000円（税込）</strong>　1回 1時間</div>
+    <div class="section-block">
+      <div class="notice-box">直近4週間以内で、ご都合のよい日時を3〜4候補ご記入ください。</div>
+      <div class="field"><label>候補①<span class="required">必須</span></label><input type="text" id="zoom_date1" placeholder="例：5月15日（木）10:00〜12:00"></div>
+      <div class="field"><label>候補②<span class="required">必須</span></label><input type="text" id="zoom_date2" placeholder="例：5月17日（土）13:00〜15:00"></div>
+      <div class="field"><label>候補③<span class="optional">任意</span></label><input type="text" id="zoom_date3" placeholder="例：5月20日（火）19:00〜21:00"></div>
+      <div class="field"><label>候補④<span class="optional">任意</span></label><input type="text" id="zoom_date4" placeholder="例：5月22日（木）10:00〜12:00"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep('zoom')">戻る</button>
+      <button class="btn btn-primary" onclick="submitZoomForm()">送信する</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step3">
+    <div class="step-title">STEP 3　サイト情報</div>
+    <div class="step-desc" id="step3Desc">選択したプランに応じた情報をご記入ください。</div>
+
+    <!-- 店舗あり -->
+    <div id="storeFields" style="display:none;">
+      <div class="section-block">
+        <div class="section-block-title">アクセス・営業時間</div>
+        <div class="field"><label>住所<span class="required">必須</span></label><input type="text" id="address" placeholder="例：〒000-0000 東京都〇〇区〇〇1-2-3"></div>
+        <div class="field"><label>最寄り駅・バス停・徒歩時間<span class="required">必須</span></label><input type="text" id="access" placeholder="例：〇〇駅 徒歩5分"></div>
+        <div class="field"><label>駐車場の有無・台数<span class="optional">任意</span></label><input type="text" id="parking" placeholder="例：あり（3台）/ なし"></div>
+        <div class="field"><label>営業時間<span class="required">必須</span></label><input type="text" id="business_hours" placeholder="例：10:00〜19:00（最終受付18:00）"></div>
+        <div class="field"><label>定休日<span class="required">必須</span></label><input type="text" id="holiday" placeholder="例：毎週水曜日・第3火曜日"></div>
+        <div class="field"><label>来店前に知っておいてほしいこと<span class="optional">任意</span></label><textarea id="visit_note" placeholder="例：お車でお越しの方は〇〇駐車場をご利用ください"></textarea></div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-block-title">お問い合わせ・予約</div>
+        <div class="field"><label>予約方法<span class="required">必須</span></label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="reserve_method" value="電話"> 電話</label>
+            <label class="checkbox-item"><input type="checkbox" name="reserve_method" value="Web"> Webフォーム</label>
+            <label class="checkbox-item"><input type="checkbox" name="reserve_method" value="LINE"> LINE</label>
+          </div>
+        </div>
+        <div class="field"><label>予約URL・電話番号<span class="required">必須</span></label><input type="text" id="reserve_contact" placeholder="例：https://〇〇.com / 090-0000-0000"></div>
+        <div class="field"><label>予約時に必要な情報<span class="optional">任意</span></label><input type="text" id="reserve_info" placeholder="例：氏名・希望メニュー・希望日時"></div>
+        <div class="field"><label>キャンセル・注意事項<span class="optional">任意</span></label><textarea id="cancel_policy" placeholder="例：前日18時までのキャンセルをお願いします"></textarea></div>
+      </div>
+
+      <!-- 任意セクション（店舗あり） -->
+      <div class="section-block">
+        <div class="section-block-title">任意セクション</div>
+        <div class="notice-box">追加したいセクションにチェックを入れてご記入ください。</div>
+
+        <div class="optional-section">
+          <label class="optional-toggle">
+            <input type="checkbox" id="opt_flow" onchange="toggleOptional('flow_content')">
+            来店の流れ
+          </label>
+          <div class="optional-content" id="flow_content">
+            <div class="field"><label>最初のアクション</label><input type="text" id="flow1" placeholder="例：LINEでご予約"></div>
+            <div class="field"><label>ステップ②</label><input type="text" id="flow2" placeholder="例：当日ご来店・受付"></div>
+            <div class="field"><label>ステップ③</label><input type="text" id="flow3" placeholder="例：施術・お会計"></div>
+          </div>
+        </div>
+
+        <div class="optional-section">
+          <label class="optional-toggle">
+            <input type="checkbox" id="opt_staff" onchange="toggleOptional('staff_content')">
+            スタッフ紹介
+          </label>
+          <div class="optional-content" id="staff_content">
+            <div class="field"><label>スタッフ人数</label><input type="text" id="staff_count" placeholder="例：3名"></div>
+            <div class="field"><label>スタッフ情報（名前・役職・一言）</label><textarea id="staff_info" placeholder="例：山田花子 / オーナー / お客様の笑顔のために全力でサポートします"></textarea></div>
+          </div>
+        </div>
+
+        <div class="optional-section">
+          <label class="optional-toggle">
+            <input type="checkbox" id="opt_voice" onchange="toggleOptional('voice_content')">
+            お客様の声
+          </label>
+          <div class="optional-content" id="voice_content">
+            <div class="field"><label>お客様の声（3つ程度）</label><textarea id="voice_info" placeholder="例：30代女性 / 施術後、肩こりがすっかりよくなりました！毎月通っています。"></textarea></div>
+            <div class="field"><label>名前・属性の掲載可否</label>
+              <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="voice_name" value="掲載可"> 掲載可（例：30代女性・Aさん）</label>
+                <label class="radio-item"><input type="radio" name="voice_name" value="匿名"> 匿名希望</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="optional-section">
+          <label class="optional-toggle">
+            <input type="checkbox" id="opt_profile" onchange="toggleOptional('profile_content')">
+            代表者の挨拶・プロフィール
+          </label>
+          <div class="optional-content" id="profile_content">
+            <div class="field"><label>代表者名（フルネーム・読み仮名）</label><input type="text" id="rep_name" placeholder="例：山田 太郎（やまだ たろう）"></div>
+            <div class="field"><label>経歴・資格・受賞歴</label><textarea id="rep_career" placeholder="自由にご記入ください"></textarea></div>
+            <div class="field"><label>自己紹介文</label><textarea id="rep_intro" placeholder="自由にご記入ください"></textarea></div>
+            <div class="field"><label>人柄が伝わるエピソード・趣味</label><textarea id="rep_episode" placeholder="自由にご記入ください"></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 店舗なし -->
+    <div id="nostoreFields" style="display:none;">
+      <div class="section-block">
+        <div class="section-block-title">会社概要</div>
+        <div class="notice-box" style="margin-bottom:16px;font-size:11px;">STEP2で入力した情報を自動で引き継いでいます。修正がある場合はここで変更してください。</div>
+        <div class="field"><label>会社名・屋号<span class="required">必須</span></label><input type="text" id="corp_name" placeholder="例：株式会社〇〇 / 〇〇デザイン事務所"></div>
+        <div class="field"><label>代表者名<span class="required">必須</span></label><input type="text" id="rep_name2" placeholder="例：山田 太郎"></div>
+        <div class="field"><label>設立年・創業年<span class="optional">任意</span></label><input type="text" id="founded" placeholder="例：2020年4月"></div>
+        <div class="field"><label>所在地<span class="optional">任意</span></label><input type="text" id="corp_address" placeholder="例：東京都渋谷区〇〇1-2-3"></div>
+        <div class="field"><label>事業内容<span class="required">必須</span></label><textarea id="corp_business" placeholder="例：Webサイト制作・グラフィックデザイン"></textarea></div>
+        <div class="field"><label>電話番号・メールアドレス<span class="required">必須</span></label><textarea id="corp_contact" placeholder="例：TEL: 090-0000-0000&#10;MAIL: info@example.com"></textarea></div>
+        <div class="field"><label>従業員数<span class="optional">任意</span></label><input type="text" id="corp_staff" placeholder="例：5名（うちアルバイト2名）"></div>
+      </div>
+
+      <!-- 任意セクション（店舗なし） -->
+      <div class="section-block">
+        <div class="section-block-title">任意セクション</div>
+        <div class="notice-box">追加したいセクションにチェックを入れてご記入ください。</div>
+
+        <div class="optional-section">
+          <label class="optional-toggle">
+            <input type="checkbox" id="opt_works" onchange="toggleOptional('works_content')">
+            実績・事例
+          </label>
+          <div class="optional-content" id="works_content">
+            <div class="field"><label>実績①（タイトル・概要・成果）</label><textarea id="work1" placeholder="例：株式会社〇〇様 / Webサイトリニューアル / 問い合わせ数が2倍に増加"></textarea></div>
+            <div class="field"><label>実績②</label><textarea id="work2" placeholder="自由にご記入ください"></textarea></div>
+            <div class="field"><label>実績③</label><textarea id="work3" placeholder="自由にご記入ください"></textarea></div>
+            <div class="field"><label>企業名・担当者名の掲載可否</label>
+              <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="work_name" value="掲載可"> 掲載可</label>
+                <label class="radio-item"><input type="radio" name="work_name" value="匿名"> 匿名希望</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="optional-section">
+          <label class="optional-toggle">
+            <input type="checkbox" id="opt_useflow" onchange="toggleOptional('useflow_content')">
+            ご利用の流れ
+          </label>
+          <div class="optional-content" id="useflow_content">
+            <div class="field"><label>最初のアクション</label><input type="text" id="useflow1" placeholder="例：お問い合わせフォームよりご連絡"></div>
+            <div class="field"><label>ステップ②</label><input type="text" id="useflow2" placeholder="例：ヒアリング・ご提案"></div>
+            <div class="field"><label>ステップ③</label><input type="text" id="useflow3" placeholder="例：ご契約・制作スタート"></div>
+          </div>
+        </div>
+
+        <div class="optional-section">
+          <label class="optional-toggle">
+            <input type="checkbox" id="opt_voice2" onchange="toggleOptional('voice2_content')">
+            お客様の声
+          </label>
+          <div class="optional-content" id="voice2_content">
+            <div class="field"><label>お客様の声（3つ程度）</label><textarea id="voice2_info" placeholder="例：40代男性 / 依頼してから2週間でサイトが完成。スピードと質に大満足です。"></textarea></div>
+            <div class="field"><label>名前・属性の掲載可否</label>
+              <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="voice2_name" value="掲載可"> 掲載可（例：40代男性・Bさん）</label>
+                <label class="radio-item"><input type="radio" name="voice2_name" value="匿名"> 匿名希望</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="optional-section">
+          <label class="optional-toggle">
+            <input type="checkbox" id="opt_faq" onchange="toggleOptional('faq_content')">
+            よくある質問
+          </label>
+          <div class="optional-content" id="faq_content">
+            <div class="field"><label>Q①</label><input type="text" id="faq_q1" placeholder="例：対応エリアはどこですか？"></div>
+            <div class="field"><label>A①</label><textarea id="faq_a1" placeholder="回答をご記入ください"></textarea></div>
+            <div class="field"><label>Q②</label><input type="text" id="faq_q2" placeholder="例：納期はどのくらいかかりますか？"></div>
+            <div class="field"><label>A②</label><textarea id="faq_a2" placeholder="回答をご記入ください"></textarea></div>
+            <div class="field"><label>Q③</label><input type="text" id="faq_q3" placeholder="例：個人でも依頼できますか？"></div>
+            <div class="field"><label>A③</label><textarea id="faq_a3" placeholder="回答をご記入ください"></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- オンライン相談 -->
+    <div id="onlineFields" style="display:none;">
+      <div class="section-block">
+        <div class="section-block-title">希望日程</div>
+        <div class="notice-box">直近4週間以内で、ご都合のよい日時を3〜4候補ご記入ください。</div>
+        <div class="field"><label>候補①<span class="required">必須</span></label><input type="text" id="date1" placeholder="例：5月15日（木）10:00〜12:00"></div>
+        <div class="field"><label>候補②<span class="required">必須</span></label><input type="text" id="date2" placeholder="例：5月17日（土）13:00〜15:00"></div>
+        <div class="field"><label>候補③<span class="optional">任意</span></label><input type="text" id="date3" placeholder="例：5月20日（火）19:00〜21:00"></div>
+        <div class="field"><label>候補④<span class="optional">任意</span></label><input type="text" id="date4" placeholder="例：5月22日（木）10:00〜12:00"></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep(3)">戻る</button>
+      <button class="btn btn-primary" onclick="nextStep(3)">次へ進む</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step4">
+    <div class="step-title">STEP 4　画像・ロゴの提出</div>
+    <div class="notice-box">
+      ※提供いただいた写真・画像のみ使用します<br>
+      ※著作権の関係上、AI生成画像はご使用いただけません<br>
+      ※写真・画像は多めにご用意ください
+    </div>
+
+    <div class="notice-box" style="margin-bottom:24px;">
+      <strong style="display:block;color:var(--primary);margin-bottom:5px;">フォルダ分けのお願い</strong>
+      以下の種類ごとに画像を分けてご提出ください。<br>
+      — 代表写真（現時点でお持ちの写真で構いません。LST撮影会後に差し替えます）<br>
+      — スタッフ写真（任意）<br>
+      — 店舗外観・内観（任意）<br>
+      — サービス・施術中の写真（任意）<br>
+      — お客様の写真（任意・掲載許可済みのもの）<br>
+      — ロゴ（任意）<br>
+      — その他（任意）
+    </div>
+
+    <div class="field">
+      <label>提出方法を選んでください<span class="required">必須</span></label>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+        <label class="step4-method-card" id="method_card_drive" onclick="selectImageMethod('drive')">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="step4-method-radio" id="method_radio_drive"></div>
+            <div class="step4-method-title">Googleドライブ <span class="step4-method-recommend">推奨</span></div>
+          </div>
+          <div class="step4-method-desc" style="margin-top:6px;padding-left:28px;">フォルダをまとめて共有できます。Googleアカウントをお持ちの方におすすめです。</div>
+        </label>
+        <label class="step4-method-card" id="method_card_gigafile" onclick="selectImageMethod('gigafile')">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="step4-method-radio" id="method_radio_gigafile"></div>
+            <div class="step4-method-title">GigaFile便</div>
+          </div>
+          <div class="step4-method-desc" style="margin-top:6px;padding-left:28px;">無料で大容量ファイルを送れます。アカウント不要で使えます。</div>
+        </label>
+        <label class="step4-method-card" id="method_card_email" onclick="selectImageMethod('email')">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="step4-method-radio" id="method_radio_email"></div>
+            <div class="step4-method-title">メール送付</div>
+          </div>
+          <div class="step4-method-desc" style="margin-top:6px;padding-left:28px;">画像ファイルを直接メールに添付して送る方法です。</div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Googleドライブ入力欄 -->
+    <div id="input_drive" style="display:none;" class="field">
+      <label>GoogleドライブのフォルダURL<span class="required">必須</span></label>
+      <input type="url" id="drive_url" placeholder="https://drive.google.com/drive/folders/〇〇">
+      <div class="field-hint">フォルダを右クリック →「共有」→「リンクをコピー」でURLを取得できます</div>
+    </div>
+
+    <!-- GigaFile便入力欄 -->
+    <div id="input_gigafile" style="display:none;" class="field">
+      <label>GigaFile便のダウンロードURL<span class="required">必須</span></label>
+      <input type="url" id="gigafile_url" placeholder="https://gigafile.nu/〇〇">
+      <div class="field-hint"><a href="https://gigafile.nu/" target="_blank" rel="noopener" style="color:var(--primary);">gigafile.nu ↗</a> からファイルをアップロードし、発行されたURLを貼ってください</div>
+    </div>
+
+    <!-- メール送付案内 -->
+    <div id="input_email" style="display:none;padding:14px 16px;background:#EBF5FA;border-left:3px solid var(--primary);margin-top:12px;font-size:12px;line-height:1.7;">
+      <strong style="display:block;color:var(--primary);margin-bottom:6px;font-size:12px;">メール送付について</strong>
+      このフォーム送信後に確認メールが届きます。<br>
+      その確認メールに返信する形で、画像ファイルを添付して送信してください。<br>
+      <span style="color:var(--text);opacity:0.8;">送信先：sugikado@f-3.jp</span>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep(4)">戻る</button>
+      <button class="btn btn-primary" onclick="nextStep(4)">次へ進む</button>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="step5">
+    <div class="step-title">STEP 5　印鑑</div>
+    <div class="step-desc">ハンコ3本セットとフリーメイト5枚の情報をご記入ください。</div>
+
+    <div class="section-block">
+      <div class="section-block-title">ハンコ3本セット</div>
+      <div class="field">
+        <label>材質</label>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;" id="hankoCards">
+
+          <div class="hanko-card" onclick="selectHanko(this, '薩摩本柘 3本セット（セット内容）')" style="flex:1;min-width:160px;border:1px solid var(--border);background:var(--white);padding:16px;cursor:pointer;transition:all 0.2s;text-align:center;">
+            <img id="hanko_img_satsuma" src="" alt="薩摩本柘 3本セット" style="width:100%;height:auto;object-fit:contain;margin-bottom:12px;display:none;">
+            <div id="hanko_placeholder_satsuma" style="width:100%;height:100px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:11px;color:#999;">画像</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:4px;">
+              <div class="hanko-radio-indicator" style="width:18px;height:18px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all 0.2s;display:flex;align-items:center;justify-content:center;"></div>
+              <div style="font-weight:700;font-size:13px;color:var(--primary);">薩摩本柘 3本セット</div>
+            </div>
+            <div style="font-size:12px;color:var(--text);opacity:0.7;">セットに含まれる</div>
+            <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:6px;">+0円（税込）</div>
+          </div>
+
+          <div class="hanko-card" onclick="selectHanko(this, '黒水牛 3本セット（+13,200円税込）')" style="flex:1;min-width:160px;border:1px solid var(--border);background:var(--white);padding:16px;cursor:pointer;transition:all 0.2s;text-align:center;">
+            <img id="hanko_img_kuroushi" src="" alt="黒水牛 3本セット" style="width:100%;height:auto;object-fit:contain;margin-bottom:12px;display:none;">
+            <div id="hanko_placeholder_kuroushi" style="width:100%;height:100px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:11px;color:#999;">画像</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:4px;">
+              <div class="hanko-radio-indicator" style="width:18px;height:18px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all 0.2s;display:flex;align-items:center;justify-content:center;"></div>
+              <div style="font-weight:700;font-size:13px;color:var(--primary);">黒水牛 3本セット</div>
+            </div>
+            <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:6px;">+13,200円（税込）</div>
+          </div>
+
+        </div>
+        <input type="hidden" id="hanko_material" value="">
+      </div>
+      <div class="field">
+        <label>書体<span class="required">必須</span></label>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="hanko_font" value="篆書体（推奨）"> 篆書体（推奨）</label>
+          <label class="radio-item"><input type="radio" name="hanko_font" value="印相体"> 印相体</label>
+          <label class="radio-item"><input type="radio" name="hanko_font" value="古印体"> 古印体</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>社名（丸印・角印共通）<span class="required">必須</span></label>
+        <div class="notice-box" style="margin-bottom:8px;font-size:11px;">STEP2で入力した屋号・会社名を自動で引き継いでいます。修正がある場合は変更してください。</div>
+        <input type="text" id="hanko_corp" placeholder="例：株式会社〇〇">
+      </div>
+      <div class="field">
+        <label>丸印の役職名<span class="required">必須</span></label>
+        <select id="hanko_role">
+          <option value="">選択してください</option>
+          <option value="代表取締役社印">代表取締役社印</option>
+          <option value="代表取締役">代表取締役</option>
+          <option value="取締役">取締役</option>
+          <option value="社長">社長</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-block-title">フリーメイト5枚</div>
+      <div class="notice-box" style="margin-bottom:12px;font-size:11px;">STEP2・3で入力した情報を自動で引き継いでいます。修正がある場合はここで変更してください。</div>
+      <div class="freemate-layout" style="margin-bottom:20px;">
+        <div class="notice-box freemate-text" style="margin-bottom:0;">
+          記入例：<br>
+          1枚目：〒116-0002 東京都荒川区荒川1-2-3<br>
+          2枚目：株式会社〇〇〇〇<br>
+          3枚目：代表取締役 〇〇 〇〇<br>
+          4枚目：TEL 03-1234-5678<br>
+          5枚目：登録番号 T1234567890123
+        </div>
+        <div class="freemate-img-wrap">
+          <img id="freemate_img" src="" alt="フリーメイト" style="width:100%;height:auto;display:none;border:1px solid var(--border);">
+          <div id="freemate_placeholder" style="width:100%;height:140px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;border:1px solid var(--border);">画像</div>
+        </div>
+      </div>
+      <div class="field"><label>1枚目　住所<span class="required">必須</span></label><input type="text" id="fm1" placeholder="例：〒116-0002 東京都荒川区荒川1-2-3"></div>
+      <div class="field"><label>2枚目　会社名<span class="required">必須</span></label><input type="text" id="fm2" placeholder="例：株式会社〇〇〇〇"></div>
+      <div class="field"><label>3枚目　役職・氏名<span class="required">必須</span></label><input type="text" id="fm3" placeholder="例：代表取締役 〇〇 〇〇"></div>
+      <div class="field"><label>4枚目　電話番号</label><input type="text" id="fm4" placeholder="例：TEL 03-1234-5678"></div>
+      <div class="field"><label>5枚目　インボイス登録番号orメールアドレスなど</label><input type="text" id="fm5" placeholder="例：T1234567890123"></div>
+
+      <div style="margin-top:8px;">
+        <div class="radio-group"><label class="radio-item"><input type="radio" id="fm_employee" name="fm_employee_radio"> 従業員用のフリーメイトも希望する</label></div>
+        <div id="fm_employee_msg" style="display:none;margin-top:8px;padding:14px 16px;background:#EBF5FA;border-left:3px solid var(--primary);font-size:12px;line-height:1.7;color:var(--text);">従業員数によって料金が異なります。詳細はフォーム送信後、担当より3営業日以内にご連絡いたします。</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep(5)">戻る</button>
+      <button class="btn btn-primary" onclick="nextStep(5)">次へ進む</button>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step" id="step6">
+    <div class="step-title">STEP 6　名刺デザイン選択</div>
+    <div class="step-desc">ご希望の名刺デザインと制作タイミングをお選びください。</div>
+
+    <div class="section-block">
+      <div class="section-block-title">名刺に記載する情報</div>
+      <div class="notice-box">STEP2で入力した情報を自動で引き継いでいます。修正がある場合はここで変更してください。</div>
+      <div class="field">
+        <label>氏名</label>
+        <input type="text" id="card_name" placeholder="例：山田 太郎">
+      </div>
+      <div class="field">
+        <label>会社名・屋号</label>
+        <input type="text" id="card_corp" placeholder="例：株式会社〇〇">
+      </div>
+      <div class="field">
+        <label>肩書き・役職</label>
+        <input type="text" id="card_title" placeholder="例：代表取締役 / 整体師">
+      </div>
+      <div class="field">
+        <label>連絡先（電話・メール・LINEなど）</label>
+        <textarea id="card_contact" placeholder="例：TEL: 090-0000-0000&#10;MAIL: info@example.com"></textarea>
+      </div>
+      <div class="field">
+        <label>住所<span class="optional">任意</span></label>
+        <input type="text" id="card_address" placeholder="例：東京都渋谷区〇〇1-2-3">
+      </div>
+      <div class="field">
+        <label>SNS URL<span class="optional">任意</span></label>
+        <div class="notice-box" style="margin-bottom:8px;font-size:11px;">名刺に載せたいSNSのURLを入力してください。不要な項目は空欄のままにしてください。</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">Instagram</span><input type="url" id="card_sns_instagram" placeholder="https://www.instagram.com/〇〇" style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">X（Twitter）</span><input type="url" id="card_sns_x" placeholder="https://x.com/〇〇" style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">Facebook</span><input type="url" id="card_sns_facebook" placeholder="https://www.facebook.com/〇〇" style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">LINE</span><input type="url" id="card_sns_line" placeholder="https://lin.ee/〇〇" style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">YouTube</span><input type="url" id="card_sns_youtube" placeholder="https://www.youtube.com/〇〇" style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:var(--text);width:100px;flex-shrink:0;">その他</span><input type="text" id="card_sns_other" placeholder="サービス名：URL" style="flex:1;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="plan-notice" style="margin-bottom:12px;">
+      <strong>名刺デザインサンプルについて</strong>
+      サンプル選択後の質問項目をもとに、情報を追加していきます。業種に合わせて、色や文字の種類を変更して制作します。構成（レイアウト）のみお好みでお選びください。
+    </div>
+    <div class="plan-notice" style="margin-bottom:20px;">
+      <strong>写真について</strong>
+      写真をサンプル内に追加ご希望の方はチェックをお願いします。サンプル内に写真を追加いたします。
+      <div style="margin-top:10px;">
+        <label class="radio-item"><input type="checkbox" id="card_photo" style="width:18px;height:18px;accent-color:var(--primary);"> 名刺に写真を追加希望する</label>
+      </div>
+    </div>
+
+    <div class="plan-cards" id="cardDesignCards">
+      <label class="plan-card" onclick="selectCard(this, 'yoko_a')">
+        <input type="radio" name="card_design" value="yoko_a">
+        <div class="plan-card-header">
+          <div class="radio-indicator"></div>
+          <div class="plan-card-title">横型名刺デザインサンプル A</div>
+          <span class="plan-card-tag">スタイリッシュ・シンプル</span>
+        </div>
+        <div class="plan-card-inner">
+          <div class="plan-card-text">
+            <div class="plan-card-genre">向いている業種：IT・コンサル・スタートアップ・個人事業主</div>
+          </div>
+          <div class="plan-card-image-wrap">
+            <img id="meishi_img_yoko_a" src="" alt="" style="width:100%;height:auto;object-fit:contain;display:none;border:1px solid var(--border);">
+            <div id="meishi_placeholder_yoko_a" style="width:100%;height:130px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;border:1px solid var(--border);">画像</div>
+          </div>
+        </div>
+      </label>
+      <label class="plan-card" onclick="selectCard(this, 'yoko_b')">
+        <input type="radio" name="card_design" value="yoko_b">
+        <div class="plan-card-header">
+          <div class="radio-indicator"></div>
+          <div class="plan-card-title">横型名刺デザインサンプル B</div>
+          <span class="plan-card-tag">プロフェッショナル・情報量多め</span>
+        </div>
+        <div class="plan-card-inner">
+          <div class="plan-card-text">
+            <div class="plan-card-genre">向いている業種：士業・経営者・複数事業を持つ方</div>
+          </div>
+          <div class="plan-card-image-wrap">
+            <img id="meishi_img_yoko_b" src="" alt="" style="width:100%;height:auto;object-fit:contain;display:none;border:1px solid var(--border);">
+            <div id="meishi_placeholder_yoko_b" style="width:100%;height:130px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;border:1px solid var(--border);">画像</div>
+          </div>
+        </div>
+      </label>
+      <label class="plan-card" onclick="selectCard(this, 'tate_a')">
+        <input type="radio" name="card_design" value="tate_a">
+        <div class="plan-card-header">
+          <div class="radio-indicator"></div>
+          <div class="plan-card-title">縦型名刺デザインサンプル A</div>
+          <span class="plan-card-tag">ミニマル・上品</span>
+        </div>
+        <div class="plan-card-inner">
+          <div class="plan-card-text">
+            <div class="plan-card-genre">向いている業種：コーチ・講師・パーソナルブランド</div>
+          </div>
+          <div class="plan-card-image-wrap">
+            <img id="meishi_img_tate_a" src="" alt="" style="width:100%;height:auto;object-fit:contain;display:none;border:1px solid var(--border);">
+            <div id="meishi_placeholder_tate_a" style="width:100%;height:130px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;border:1px solid var(--border);">画像</div>
+          </div>
+        </div>
+      </label>
+      <label class="plan-card" onclick="selectCard(this, 'tate_b')">
+        <input type="radio" name="card_design" value="tate_b">
+        <div class="plan-card-header">
+          <div class="radio-indicator"></div>
+          <div class="plan-card-title">縦型名刺デザインサンプル B</div>
+          <span class="plan-card-tag">クラシック・格式ある</span>
+        </div>
+        <div class="plan-card-inner">
+          <div class="plan-card-text">
+            <div class="plan-card-genre">向いている業種：士業・経営者・伝統産業・和を意識した業種</div>
+          </div>
+          <div class="plan-card-image-wrap">
+            <img id="meishi_img_tate_b" src="" alt="" style="width:100%;height:auto;object-fit:contain;display:none;border:1px solid var(--border);">
+            <div id="meishi_placeholder_tate_b" style="width:100%;height:130px;background:#E8E4DC;display:flex;align-items:center;justify-content:center;font-size:11px;color:#999;border:1px solid var(--border);">画像</div>
+          </div>
+        </div>
+      </label>
+    </div>
+
+    <div class="section-block">
+      <div class="section-block-title">制作タイミング</div>
+      <div class="field">
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="card_timing" value="サイト完成後に制作"> サイト完成後に制作（サイトURLを名刺に記載）</label>
+          <label class="radio-item"><input type="radio" name="card_timing" value="写真完了次第すぐ制作"> 写真撮影完了次第すぐ制作（サイトURLなし）</label>
+          <label class="radio-item"><input type="radio" id="card_employee" name="card_employee_radio"> 従業員用の名刺も希望する</label>
+        </div>
+        <div id="card_employee_msg" style="display:none;margin-top:8px;padding:14px 16px;background:#EBF5FA;border-left:3px solid var(--primary);font-size:12px;line-height:1.7;color:var(--text);">従業員数によって料金が異なります。詳細はフォーム送信後、担当より3営業日以内にご連絡いたします。</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep(6)">戻る</button>
+      <button class="btn btn-primary" onclick="nextStep(6)">次へ進む</button>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="step" id="step7">
+    <div class="step-title">STEP 7　オプション</div>
+    <div class="step-desc">追加オプションをご希望の場合はお選びください。選択された場合は別途ご連絡いたします。</div>
+
+    <div class="option-card" onclick="toggleOption(this, 'opt_meishi')">
+      <input type="checkbox" id="opt_meishi" style="display:none;">
+      <div class="option-card-header">
+        <div class="checkbox-indicator"></div>
+        <div class="option-card-title">オリジナル名刺（両面）</div>
+        <div class="option-card-price">20,000円（税込）</div>
+      </div>
+    </div>
+
+    <div class="option-card" onclick="toggleOption(this, 'opt_logo')">
+      <input type="checkbox" id="opt_logo" style="display:none;">
+      <div class="option-card-header">
+        <div class="checkbox-indicator"></div>
+        <div class="option-card-title">ロゴ制作</div>
+        <div class="option-card-price">30,000円（税込）</div>
+      </div>
+      <div class="option-card-body">
+        納品：ロゴ画像1種類（PNG/JPEG）<br>
+        修正対応：1回まで<br>
+        納期目安：2〜3週間
+      </div>
+    </div>
+
+    <div class="notice-box" style="margin-top:24px;">
+      ※オプションを選択された場合は、別途ご連絡いたします。
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep(7)">戻る</button>
+      <button class="btn btn-primary" onclick="nextStep(7)">確認画面へ</button>
+    </div>
+  </div>
+
+  <!-- STEP 8 確認 -->
+  <div class="step" id="step8">
+    <div class="step-title">STEP 8　入力内容の確認</div>
+    <div class="step-desc">以下の内容をご確認の上、送信してください。</div>
+
+    <div id="confirmContent"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep(8)">修正する</button>
+      <button class="btn btn-primary" onclick="submitForm()">この内容で送信する</button>
+    </div>
+  </div>
+
+  <!-- 完了画面 -->
+  <div class="step" id="stepComplete">
+    <div class="complete-screen">
+      <h2>送信が完了しました</h2>
+      <p>ヒアリング内容を受け付けました。<br>内容を確認の上、担当者よりご連絡いたします。<br>しばらくお待ちください。</p>
+      <div style="margin-top:32px;padding:24px;background:#EBF5FA;border:1px solid var(--border);">
+        <p style="font-size:14px;font-weight:700;color:var(--primary);margin-bottom:12px;letter-spacing:0.05em;">■ 次のステップ</p>
+        <p style="font-size:13px;line-height:1.9;margin-bottom:16px;">LST予約フォームより、打ち合わせ日程をご予約ください。</p>
+        <a id="lstUrl" href="#" target="_blank" rel="noopener" style="display:inline-block;background:var(--primary);color:#fff;font-family:'Zen Old Mincho',serif;font-size:14px;letter-spacing:0.08em;padding:14px 32px;text-decoration:none;">LST予約フォームへ進む ↗</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let currentStep = 1;
+  let selectedPlan = '';
+  let zoomAdded = false;
+
+  function updatePrice() {
+    let base = 165000;
+    let details = ['起業応援セットプラン 150,000円'];
+
+    // オンライン相談（プラン選択）
+    if (selectedPlan === 'online') {
+      base += 5000;
+      details.push('オンライン相談 +5,000円');
+    }
+
+    // オンライン相談（STEP0②選択）
+    if (window.zoomOptionSelected) {
+      base += 5000;
+      details.push('オンライン相談（打ち合わせ）+5,000円');
+    }
+
+    // ハンコ材質
+    const hankoVal = document.getElementById('hanko_material') ? document.getElementById('hanko_material').value : '';
+    if (hankoVal.includes('黒水牛')) {
+      base += 13200;
+      details.push('黒水牛 3本セット +13,200円');
+    }
+
+    // オプション
+    if (document.getElementById('opt_meishi') && document.getElementById('opt_meishi').checked) {
+      base += 20000;
+      details.push('オリジナル名刺（両面）+20,000円');
+    }
+    if (document.getElementById('opt_logo') && document.getElementById('opt_logo').checked) {
+      base += 30000;
+      details.push('ロゴ制作 +30,000円');
+    }
+
+    document.getElementById('totalPrice').textContent = base.toLocaleString() + '円';
+    document.getElementById('priceBreakdown').innerHTML = details.join('<br>');
+    updateFooterPadding();
+  }
+
+  function selectHanko(card, value) {
+    document.querySelectorAll('.hanko-card').forEach(c => {
+      c.style.borderColor = 'var(--border)';
+      c.style.background = 'var(--white)';
+      const ind = c.querySelector('.hanko-radio-indicator');
+      if (ind) {
+        ind.style.borderColor = 'var(--border)';
+        ind.style.background = 'var(--white)';
+        ind.innerHTML = '';
+      }
+    });
+    card.style.borderColor = 'var(--primary)';
+    card.style.background = '#EBF5FA';
+    const ind = card.querySelector('.hanko-radio-indicator');
+    if (ind) {
+      ind.style.borderColor = 'var(--primary)';
+      ind.style.background = 'var(--primary)';
+      ind.innerHTML = '<div style="width:7px;height:7px;border-radius:50%;background:#fff;"></div>';
+    }
+    document.getElementById('hanko_material').value = value;
+    updatePrice();
+  }
+
+  function selectPlan(card, plan) {
+    document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedPlan = plan;
+    updatePrice();
+    const msg = document.getElementById('onlineMsg');
+    if (msg) msg.style.display = plan === 'online' ? 'block' : 'none';
+  }
+
+  function toggleZoom(el) {
+    el.classList.toggle('selected');
+    zoomAdded = el.classList.contains('selected');
+  }
+
+  function selectCard(card, design) {
+    document.querySelectorAll('#cardDesignCards .plan-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+  }
+
+  function toggleOption(card, id) {
+    card.classList.toggle('selected');
+    document.getElementById(id).checked = card.classList.contains('selected');
+    updatePrice();
+  }
+
+  function toggleOptional(contentId) {
+    const el = document.getElementById(contentId);
+    el.classList.toggle('open');
+  }
+
+  // STEP0に戻る
+  function backToStep0() {
+    document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+    document.getElementById('step0').classList.remove('step0-hidden');
+    window.zoomMode = false;
+    window.zoomOptionSelected = false;
+    updatePrice();
+    // プログレスバーのSTEP0をactiveに戻す
+    document.querySelectorAll('.progress-step').forEach(el => {
+      el.classList.remove('active', 'done');
+    });
+    const s0 = document.querySelector('.progress-step[data-step="0"]');
+    if (s0) s0.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // STEP0 意向選択
+  function selectIntent(choice) {
+    const cardA = document.getElementById('check_card_a');
+    const cardB = document.getElementById('check_card_b');
+    const msgB  = document.getElementById('intent_msg_b');
+    const btnA  = document.getElementById('intent_btn_a');
+
+    cardA.classList.remove('selected');
+    cardB.classList.remove('selected');
+
+    const btnB = document.getElementById('intent_btn_b');
+
+    if (choice === 'a') {
+      cardA.classList.add('selected');
+      msgB.style.display = 'none';
+      btnA.style.display = 'flex';
+      btnA.style.justifyContent = 'flex-end';
+      btnB.style.display = 'none';
+      window.zoomOptionSelected = false;
+    } else {
+      cardB.classList.add('selected');
+      btnA.style.display = 'none';
+      msgB.style.display = 'block';
+      btnB.style.display = 'flex';
+      btnB.style.justifyContent = 'flex-end';
+      window.zoomOptionSelected = true;
+    }
+    updatePrice();
+  }
+
+  // STEP0②→Zoom用フォームへ進む（STEP2+Zoom日程のみ）
+  function startZoom() {
+    document.getElementById('step0').classList.add('step0-hidden');
+    window.zoomMode = true;
+    showStep(2);
+  }
+
+  // STEP0→STEP1へ進む
+  function startForm() {
+    document.getElementById('step0').classList.add('step0-hidden');
+    showStep(1);
+  }
+
+  function updateProgress(step) {
+    document.querySelectorAll('.progress-step').forEach(el => {
+      const s = parseInt(el.dataset.step);
+      el.classList.remove('active', 'done');
+      if (s === step) el.classList.add('active');
+      else if (s < step) el.classList.add('done');
+      // STEP0は常にdone（STEP1以降に進んだとき）
+      if (s === 0 && step >= 1) el.classList.add('done');
+
+      // doneとactiveのstep-circleにクリックイベントを付与
+      const circle = el.querySelector('.step-circle');
+      if (circle) {
+        circle.onclick = null;
+        if (s === 0) {
+          // STEP0は常にbackToStep0()
+          circle.onclick = () => backToStep0();
+        } else if (s <= step) {
+          circle.onclick = () => showStep(s);
+        }
+      }
+    });
+  }
+
+  function showStep(step) {
+    document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+    const el = document.getElementById('step' + step);
+    if (el) el.classList.add('active');
+    if (step !== 'zoom') updateProgress(step);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    currentStep = step;
+
+    // STEP3に来たとき、STEP2の情報を自動引き継ぎ（店舗なし）
+    if (step === 3) {
+      const corpName = document.getElementById('corp_name');
+      const companyName = document.getElementById('company_name');
+      if (corpName && companyName && !corpName.value) corpName.value = companyName.value;
+
+      const repName2 = document.getElementById('rep_name2');
+      const fullName = document.getElementById('full_name');
+      if (repName2 && fullName && !repName2.value) repName2.value = fullName.value;
+    }
+
+    // STEP5に来たとき、STEP2・3の情報を自動引き継ぎ
+    if (step === 5) {
+      // 印鑑：屋号・会社名
+      const corp = document.getElementById('company_name');
+      const hanko = document.getElementById('hanko_corp');
+      if (corp && hanko && !hanko.value) hanko.value = corp.value;
+
+      // フリーメイト：住所(STEP3 store) → 1枚目、会社名 → 2枚目、肩書き+氏名 → 3枚目、連絡先 → 4枚目
+      const fm1 = document.getElementById('fm1');
+      const fm2 = document.getElementById('fm2');
+      const fm3 = document.getElementById('fm3');
+      const fm4 = document.getElementById('fm4');
+      if (fm1 && !fm1.value) {
+        const addr = document.getElementById('address');
+        if (addr && addr.value) fm1.value = addr.value;
+      }
+      if (fm2 && !fm2.value) {
+        if (corp && corp.value) fm2.value = corp.value;
+      }
+      if (fm3 && !fm3.value) {
+        const titleVal = (document.getElementById('title') || {}).value || '';
+        const nameVal = (document.getElementById('full_name') || {}).value || '';
+        if (titleVal || nameVal) fm3.value = (titleVal + (titleVal && nameVal ? '　' : '') + nameVal).trim();
+      }
+      if (fm4 && !fm4.value) {
+        const phone = document.getElementById('phone_number');
+        if (phone && phone.value) fm4.value = 'TEL ' + phone.value;
+      }
+      const fm5 = document.getElementById('fm5');
+      if (fm5 && !fm5.value) {
+        const email = document.getElementById('email_address');
+        if (email && email.value) fm5.value = 'MAIL ' + email.value;
+      }
+    }
+
+    // STEP6に来たとき、STEP2の情報を自動引き継ぎ
+    if (step === 6) {
+      const fields = [
+        ['full_name', 'card_name'],
+        ['company_name', 'card_corp'],
+        ['title', 'card_title'],
+      ];
+      fields.forEach(([from, to]) => {
+        const src = document.getElementById(from);
+        const dst = document.getElementById(to);
+        if (src && dst && !dst.value) dst.value = src.value;
+      });
+      // 連絡先：電話番号・メールアドレスを組み合わせて引き継ぎ
+      const cardContact = document.getElementById('card_contact');
+      if (cardContact && !cardContact.value) {
+        const phone = document.getElementById('phone_number');
+        const email = document.getElementById('email_address');
+        const lines = [];
+        if (phone && phone.value) lines.push('TEL: ' + phone.value);
+        if (email && email.value) lines.push('MAIL: ' + email.value);
+        if (lines.length) cardContact.value = lines.join('\n');
+      }
+    }
+  }
+
+  function nextStep(from) {
+    if (from === 1) {
+      if (!selectedPlan) { alert('プランを選択してください。'); return; }
+      updateStep3Fields();
+    }
+    if (from === 7) {
+      buildConfirm();
+    }
+    // Zoomモード：STEP2の次はZoom日程ステップへ
+    if (window.zoomMode && from === 2) {
+      showStep('zoom');
+      return;
+    }
+    showStep(from + 1);
+  }
+
+  function prevStep(from) {
+    // Zoomモード：Zoomステップの戻るはSTEP2へ
+    if (window.zoomMode && from === 'zoom') {
+      showStep(2);
+      return;
+    }
+    showStep(from - 1);
+  }
+
+
+
+  function submitZoomForm() {
+    const d1 = document.getElementById('zoom_date1').value;
+    const d2 = document.getElementById('zoom_date2').value;
+    if (!d1 || !d2) { alert('候補①と候補②は必須です。'); return; }
+    alert('送信しました。日程確認後、ご連絡いたします。');
+  }
+
+  function updateStep3Fields() {
+    document.getElementById('storeFields').style.display = 'none';
+    document.getElementById('nostoreFields').style.display = 'none';
+    document.getElementById('onlineFields').style.display = 'none';
+
+    if (selectedPlan === 'store_a' || selectedPlan === 'store_b' || selectedPlan === 'store_c') {
+      document.getElementById('storeFields').style.display = 'block';
+      document.getElementById('step3Desc').textContent = '店舗ありサイトの制作に必要な情報をご記入ください。任意セクションは追加希望の場合のみご記入ください。';
+    } else if (selectedPlan === 'nostore_a' || selectedPlan === 'nostore_b' || selectedPlan === 'nostore_c') {
+      document.getElementById('nostoreFields').style.display = 'block';
+      document.getElementById('step3Desc').textContent = '店舗なしサイトの制作に必要な情報をご記入ください。任意セクションは追加希望の場合のみご記入ください。';
+    } else if (selectedPlan === 'online') {
+      document.getElementById('onlineFields').style.display = 'block';
+      document.getElementById('step3Desc').textContent = 'ご希望の打ち合わせ日時を3〜4候補ご記入ください。確認後こちらからご連絡します。';
+    }
+  }
+
+  function buildConfirm() {
+    const planNames = {
+      store_a: '店舗ありデザインサンプル A',
+      store_b: '店舗ありデザインサンプル B',
+      nostore_a: '店舗なしデザインサンプル A',
+      nostore_b: '店舗なしデザインサンプル B',
+      online: 'オンライン相談希望'
+    };
+
+    let html = '';
+
+    html += confirmSection('STEP1　プラン選択', [
+      ['選択プラン', planNames[selectedPlan] || ''],
+    ], 1);
+
+    html += confirmSection('STEP2　基本情報', [
+      ['氏名（代表者名・契約者名）', val('full_name')],
+      ['屋号・会社名', val('company_name')],
+      ['肩書き', val('title')],
+      ['業種', val('industry')],
+      ['ターゲット', val('target')],
+      ['お悩み・困りごと', val('pain')],
+      ['得られる変化・結果', val('result')],
+      ['キャッチコピー', val('catchcopy')],
+      ['ベースカラー', val('base_color')],
+      ['色の希望', val('color_note')],
+      ['きっかけ・想い', val('story')],
+      ['こだわり', val('value')],
+      ['強み①', val('strength1')],
+      ['強み②', val('strength2')],
+      ['強み③', val('strength3')],
+      ['サービス①名', val('s1_name')],
+      ['サービス①内容', val('s1_desc')],
+      ['サービス①時間', val('s1_time')],
+      ['サービス①料金', val('s1_price')],
+      ['サービス②名', val('s2_name')],
+      ['サービス③名', val('s3_name')],
+      ['掲載したくない情報', val('no_publish')],
+      ['連絡先情報', val('contact_info')],
+      ['Instagram', val('sns_instagram')],
+      ['X（Twitter）', val('sns_x')],
+      ['Facebook', val('sns_facebook')],
+      ['LINE', val('sns_line')],
+      ['YouTube', val('sns_youtube')],
+      ['SNSその他', val('sns_other')],
+      ['返信目安', val('reply_time')],
+    ], 2);
+
+    html += confirmSection('STEP3　サイト情報', [
+      ['住所', val('address')],
+      ['アクセス', val('access')],
+      ['営業時間', val('business_hours')],
+      ['定休日', val('holiday')],
+      ['予約方法連絡先', val('reserve_contact')],
+      ['会社名・屋号', val('corp_name')],
+      ['代表者名', val('rep_name2')],
+      ['事業内容', val('corp_business')],
+    ], 3);
+
+    html += confirmSection('STEP4　画像提出', [
+      ['GoogleドライブURL', val('drive_url')]
+    ], 4);
+
+    html += confirmSection('STEP5　印鑑', [
+      ['材質', document.getElementById('hanko_material').value || '―'],
+      ['書体', radioVal('hanko_font')],
+      ['社名', val('hanko_corp')],
+      ['役職名', val('hanko_role', true)],
+      ['フリーメイト1枚目', val('fm1')],
+      ['フリーメイト2枚目', val('fm2')],
+      ['フリーメイト3枚目', val('fm3')],
+      ['フリーメイト4枚目', val('fm4')],
+      ['フリーメイト5枚目', val('fm5')],
+    ], 5);
+
+    html += confirmSection('STEP6　名刺', [
+      ['氏名', val('card_name')],
+      ['会社名・屋号', val('card_corp')],
+      ['肩書き・役職', val('card_title')],
+      ['連絡先', val('card_contact')],
+      ['住所', val('card_address')],
+      ['SNS Instagram', val('card_sns_instagram')],
+      ['SNS X（Twitter）', val('card_sns_x')],
+      ['SNS Facebook', val('card_sns_facebook')],
+      ['SNS LINE', val('card_sns_line')],
+      ['SNS YouTube', val('card_sns_youtube')],
+      ['SNS その他', val('card_sns_other')],
+      ['デザイン', radioVal('card_design')],
+      ['制作タイミング', radioVal('card_timing')],
+    ], 6);
+
+    const opts = [];
+    if (document.getElementById('opt_meishi').checked) opts.push('オリジナル名刺（両面）20,000円');
+    if (document.getElementById('opt_logo').checked) opts.push('ロゴ制作 30,000円');
+    html += confirmSection('STEP7　オプション', [
+      ['選択オプション', opts.length ? opts.join('、') : 'なし']
+    ], 7);
+
+    document.getElementById('confirmContent').innerHTML = html;
+  }
+
+  function val(id, isSelect) {
+    const el = document.getElementById(id);
+    if (!el) return '―';
+    return el.value || '―';
+  }
+
+  function radioVal(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '―';
+  }
+
+  function confirmSection(title, rows, step) {
+    let html = `<div class="confirm-section">
+      <div class="confirm-section-title" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>${title}</span>
+        <button onclick="showStep(${step})" style="font-family:'Zen Old Mincho',serif;font-size:12px;color:var(--primary);background:transparent;border:1px solid var(--primary);padding:4px 16px;cursor:pointer;letter-spacing:0.05em;">修正する</button>
+      </div>`;
+    rows.forEach(([label, value]) => {
+      if (value && value !== '―') {
+        html += `<div class="confirm-row"><div class="confirm-label">${label}</div><div class="confirm-value">${value}</div></div>`;
+      }
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function submitForm() {
+    const GAS_POST_URL = 'https://script.google.com/macros/s/AKfycbyEoX8CvlA8D6NEpxQV7OVmhUCL1_qLZqULNHeM7Y7dYYOH-bO0P-wY0p68PUG5vKkbVA/exec';
+    const LST_URL = 'https://script.google.com/macros/u/2/s/AKfycbwaFVhsvOTZk6b8nH9ikNyoFJyqOuIuLG1eF8KkjgSvZgoD0uUzet0hzfJZfdZ3Pk0F/exec';
+
+    // 画像送付方法を取得
+    const imageMethodEl = document.querySelector('.step4-method-card.selected');
+    const imageMethod = imageMethodEl ? imageMethodEl.id.replace('method_card_', '') : '';
+
+    // オプション取得
+    const opts = [];
+    if (document.getElementById('opt_meishi').checked) opts.push('オリジナル名刺（両面）20,000円');
+    if (document.getElementById('opt_logo').checked) opts.push('ロゴ制作 30,000円');
+
+    // プラン名
+    const planNames = {
+      store_a: '店舗ありデザインサンプル A',
+      store_b: '店舗ありデザインサンプル B',
+      store_c: '店舗ありデザインサンプル C',
+      nostore_a: '店舗なしデザインサンプル A',
+      nostore_b: '店舗なしデザインサンプル B',
+      nostore_c: '店舗なしデザインサンプル C',
+      online: 'オンライン相談希望'
+    };
+
+    const params = {
+      full_name: document.getElementById('full_name').value || '',
+      company_name: document.getElementById('company_name').value || '',
+      title: document.getElementById('title').value || '',
+      industry: document.getElementById('industry').value || '',
+      email_address: document.getElementById('email_address').value || '',
+      phone_number: document.getElementById('phone_number').value || '',
+      target: document.getElementById('target').value || '',
+      pain: document.getElementById('pain').value || '',
+      result: document.getElementById('result').value || '',
+      catchcopy: document.getElementById('catchcopy').value || '',
+      base_color: document.getElementById('base_color').value || '',
+      color_note: document.getElementById('color_note').value || '',
+      story: document.getElementById('story').value || '',
+      value: document.getElementById('value').value || '',
+      strength1: document.getElementById('strength1').value || '',
+      strength2: document.getElementById('strength2').value || '',
+      strength3: document.getElementById('strength3').value || '',
+      s1_name: document.getElementById('s1_name').value || '',
+      s1_desc: document.getElementById('s1_desc').value || '',
+      s1_time: document.getElementById('s1_time').value || '',
+      s1_price: document.getElementById('s1_price').value || '',
+      s2_name: document.getElementById('s2_name').value || '',
+      s3_name: document.getElementById('s3_name').value || '',
+      no_publish: document.getElementById('no_publish').value || '',
+      contact_info: document.getElementById('contact_info').value || '',
+      sns_instagram: document.getElementById('sns_instagram').value || '',
+      sns_x: document.getElementById('sns_x').value || '',
+      sns_facebook: document.getElementById('sns_facebook').value || '',
+      sns_line: document.getElementById('sns_line').value || '',
+      sns_youtube: document.getElementById('sns_youtube').value || '',
+      sns_other: document.getElementById('sns_other').value || '',
+      reply_time: document.getElementById('reply_time').value || '',
+      address: document.getElementById('address') ? document.getElementById('address').value : '',
+      access: document.getElementById('access') ? document.getElementById('access').value : '',
+      business_hours: document.getElementById('business_hours') ? document.getElementById('business_hours').value : '',
+      holiday: document.getElementById('holiday') ? document.getElementById('holiday').value : '',
+      reserve_contact: document.getElementById('reserve_contact') ? document.getElementById('reserve_contact').value : '',
+      corp_name: document.getElementById('corp_name') ? document.getElementById('corp_name').value : '',
+      rep_name2: document.getElementById('rep_name2') ? document.getElementById('rep_name2').value : '',
+      corp_business: document.getElementById('corp_business') ? document.getElementById('corp_business').value : '',
+      drive_url: document.getElementById('drive_url') ? document.getElementById('drive_url').value : '',
+      image_method: imageMethod,
+      hanko_material: document.getElementById('hanko_material').value || '',
+      hanko_font: (document.querySelector('input[name="hanko_font"]:checked') || {}).value || '',
+      hanko_corp: document.getElementById('hanko_corp').value || '',
+      hanko_role: document.getElementById('hanko_role').value || '',
+      fm1: document.getElementById('fm1').value || '',
+      fm2: document.getElementById('fm2').value || '',
+      fm3: document.getElementById('fm3').value || '',
+      fm4: document.getElementById('fm4').value || '',
+      fm5: document.getElementById('fm5').value || '',
+      card_name: document.getElementById('card_name').value || '',
+      card_corp: document.getElementById('card_corp').value || '',
+      card_title: document.getElementById('card_title').value || '',
+      card_contact: document.getElementById('card_contact').value || '',
+      card_address: document.getElementById('card_address').value || '',
+      card_sns_instagram: document.getElementById('card_sns_instagram').value || '',
+      card_sns_x: document.getElementById('card_sns_x').value || '',
+      card_sns_facebook: document.getElementById('card_sns_facebook').value || '',
+      card_sns_line: document.getElementById('card_sns_line').value || '',
+      card_sns_youtube: document.getElementById('card_sns_youtube').value || '',
+      card_sns_other: document.getElementById('card_sns_other').value || '',
+      card_design: (document.querySelector('input[name="card_design"]:checked') || {}).value || '',
+      card_timing: (document.querySelector('input[name="card_timing"]:checked') || {}).value || '',
+      options: opts.join('、'),
+      selected_plan: planNames[selectedPlan] || selectedPlan,
+      total_price: document.getElementById('totalPrice').textContent || ''
+    };
+
+    // 送信ボタンを無効化
+    const btn = document.querySelector('#step8 .btn-primary');
+    if (btn) { btn.disabled = true; btn.textContent = '送信中...'; }
+
+    fetch(GAS_POST_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+      mode: 'no-cors'
+    })
+    .then(() => {
+      // 完了画面表示
+      localStorage.removeItem('kigyou_form_data');
+      document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+      document.getElementById('stepComplete').classList.add('active');
+      document.getElementById('progressBar').style.display = 'none';
+      // LST URL表示
+      const lstEl = document.getElementById('lstUrl');
+      if (lstEl) lstEl.href = LST_URL;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    })
+    .catch(() => {
+      // エラーでも完了画面へ（no-corsのため常にここに来る場合あり）
+      localStorage.removeItem('kigyou_form_data');
+      document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+      document.getElementById('stepComplete').classList.add('active');
+      document.getElementById('progressBar').style.display = 'none';
+      const lstEl = document.getElementById('lstUrl');
+      if (lstEl) lstEl.href = LST_URL;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  function selectImageMethod(method) {
+    // カードの選択状態をリセット
+    ['drive','gigafile','email'].forEach(m => {
+      document.getElementById('method_card_' + m).classList.remove('selected');
+      const input = document.getElementById('input_' + m);
+      if (input) input.style.display = 'none';
+    });
+    // 選択したカードをアクティブに
+    document.getElementById('method_card_' + method).classList.add('selected');
+    const target = document.getElementById('input_' + method);
+    if (target) target.style.display = 'block';
+  }
+
+  // ===== GAS画像読み込み =====
+  const GAS_IMAGE_URL = 'https://script.google.com/macros/s/AKfycbyEoX8CvlA8D6NEpxQV7OVmhUCL1_qLZqULNHeM7Y7dYYOH-bO0P-wY0p68PUG5vKkbVA/exec';
+
+  function loadImages() {
+    fetch(GAS_IMAGE_URL, { redirect: 'follow' })
+      .then(r => r.json())
+      .then(images => {
+        // STEP0 プラン紹介写真
+        if (images['step0_plan']) {
+          const el = document.querySelector('.plan-set-image-placeholder');
+          if (el) {
+            el.outerHTML = '<img src="' + images['step0_plan'] + '" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;top:0;left:0;" alt="起業応援セットプラン">';
+          }
+        }
+        // STEP1 プランカード
+        const step1Keys = ['elegant','natural','luxury','creative','navy','sharp'];
+        step1Keys.forEach(k => {
+          const img = document.getElementById('step1_img_' + k);
+          const ph = document.getElementById('step1_placeholder_' + k);
+          if (img && images['step1_' + k]) {
+            img.src = images['step1_' + k];
+            img.style.display = 'block';
+            if (ph) ph.style.display = 'none';
+          }
+        });
+        // STEP5 ハンコ
+        ['tsuge','satsuma','kuroushi'].forEach(k => {
+          const img = document.getElementById('hanko_img_' + k);
+          const ph = document.getElementById('hanko_placeholder_' + k);
+          if (img && images['step5_hanko_' + k]) {
+            img.src = images['step5_hanko_' + k];
+            img.style.display = 'block';
+            if (ph) ph.style.display = 'none';
+          }
+        });
+        // STEP5 フリーメイト
+        const fmImg = document.getElementById('freemate_img');
+        const fmPh = document.getElementById('freemate_placeholder');
+        if (fmImg && images['step5_freemate']) {
+          fmImg.src = images['step5_freemate'];
+          fmImg.style.display = 'block';
+          if (fmPh) fmPh.style.display = 'none';
+        }
+        // STEP6 名刺
+        ['yoko_a','yoko_b','tate_a','tate_b'].forEach(k => {
+          const img = document.getElementById('meishi_img_' + k);
+          const ph = document.getElementById('meishi_placeholder_' + k);
+          if (img && images['step6_meishi_' + k]) {
+            img.src = images['step6_meishi_' + k];
+            img.style.display = 'block';
+            if (ph) ph.style.display = 'none';
+          }
+        });
+      })
+      .catch(e => {});
+  }
+
+  window.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('fm_employee').addEventListener('change', function() {
+      document.getElementById('fm_employee_msg').style.display = this.checked ? 'block' : 'none';
+    });
+    document.getElementById('card_employee').addEventListener('change', function() {
+      document.getElementById('card_employee_msg').style.display = this.checked ? 'block' : 'none';
+    });
+
+    // ラジオボタンを再クリックで選択解除
+    ['fm_employee', 'card_employee'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('mousedown', function() {
+        this._preClick = this.checked;
+      });
+      el.addEventListener('click', function() {
+        if (this._preClick) {
+          this.checked = false;
+          document.getElementById(id + '_msg').style.display = 'none';
+        }
+      });
+    });
+  });
+
+  window.addEventListener('DOMContentLoaded', loadImages);
+
+  // ===== 画像モーダル =====
+  function openImgModal(src) {
+    const overlay = document.getElementById('imgModalOverlay');
+    const img = document.getElementById('imgModalImg');
+    img.src = src;
+    overlay.classList.add('active');
+  }
+  function closeImgModal() {
+    document.getElementById('imgModalOverlay').classList.remove('active');
+  }
+  window.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('imgModalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeImgModal();
+    });
+    // 画像クリックでモーダル表示
+    document.addEventListener('click', function(e) {
+      if (e.target.matches('.plan-card-image-wrap img') && e.target.src && !e.target.src.endsWith('form.html')) {
+        openImgModal(e.target.src);
+      }
+    });
+  });
+
+  // フッター高さを動的にbodyのpadding-bottomに反映
+  function updateFooterPadding() {
+    const footer = document.querySelector('.price-footer');
+    if (footer) {
+      document.body.style.paddingBottom = footer.offsetHeight + 16 + 'px';
+    }
+  }
+  window.addEventListener('DOMContentLoaded', updateFooterPadding);
+  window.addEventListener('resize', updateFooterPadding);
+
+  // STEPが表示されるたびに画像を再適用
+  const _origShowStep = window.showStep;
+  window.showStep = function(n) {
+    if (_origShowStep) _origShowStep(n);
+    setTimeout(loadImages, 100);
+  };
+
+  // ===== 自動保存・復元 =====
+  const SAVE_KEY = 'kigyou_form_data';
+
+  // 保存対象のフィールドID一覧
+  const SAVE_FIELDS = [
+    'full_name','company_name','title','industry','email_address','phone_number','target','pain','result',
+    'catchcopy','base_color','color_note','story','value',
+    'strength1','strength2','strength3',
+    's1_name','s1_desc','s1_time','s1_price',
+    's2_name','s2_desc','s2_time','s2_price',
+    's3_name','s3_desc','s3_time','s3_price',
+    'no_publish','contact_info','sns_instagram','sns_x','sns_facebook','sns_line','sns_youtube','sns_other','reply_time',
+    'address','access','business_hours','holiday','reserve_contact',
+    'corp_name','rep_name2','corp_business',
+    'drive_url','gigafile_url',
+    'hanko_corp','hanko_role','fm1','fm2','fm3','fm4','fm5',
+    'card_name','card_corp','card_title','card_contact','card_address','card_sns_instagram','card_sns_x','card_sns_facebook','card_sns_line','card_sns_youtube','card_sns_other',
+    'zoom_date1','zoom_date2','zoom_date3','zoom_note'
+  ];
+
+  function saveForm() {
+    const data = {};
+    // テキスト・テキストエリア・select
+    SAVE_FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) data[id] = el.value;
+    });
+    // ラジオボタン
+    ['hanko_font','card_design','card_timing'].forEach(name => {
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      if (el) data['radio_' + name] = el.value;
+    });
+    // チェックボックス
+    ['opt_meishi','opt_logo','fm_employee','card_employee'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) data['check_' + id] = el.checked;
+    });
+    // プラン選択
+    if (selectedPlan) data['selectedPlan'] = selectedPlan;
+
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  }
+
+  function restoreForm() {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return;
+    let data;
+    try { data = JSON.parse(raw); } catch(e) { return; }
+
+    // テキスト・テキストエリア・select
+    SAVE_FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && data[id] !== undefined) el.value = data[id];
+    });
+    // ラジオボタン
+    ['hanko_font','card_design','card_timing'].forEach(name => {
+      const val = data['radio_' + name];
+      if (val) {
+        const el = document.querySelector(`input[name="${name}"][value="${val}"]`);
+        if (el) el.checked = true;
+      }
+    });
+    // チェックボックス
+    ['opt_meishi','opt_logo','fm_employee','card_employee'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && data['check_' + id] !== undefined) {
+        el.checked = data['check_' + id];
+        // 従業員メッセージの表示状態を復元
+        const msg = document.getElementById(id + '_msg');
+        if (msg) msg.style.display = el.checked ? 'block' : 'none';
+      }
+    });
+    // プラン選択
+    if (data['selectedPlan']) {
+      const card = document.querySelector(`.plan-card input[value="${data['selectedPlan']}"]`);
+      if (card) {
+        selectedPlan = data['selectedPlan'];
+        card.closest('.plan-card').classList.add('selected');
+        card.checked = true;
+      }
+    }
+  }
+
+  // 入力のたびに自動保存
+  window.addEventListener('DOMContentLoaded', function() {
+    // 復元
+    restoreForm();
+
+    // input・change・textareaの変更を監視
+    document.addEventListener('input', saveForm);
+    document.addEventListener('change', saveForm);
+  });
+
+  // 送信完了後にデータ削除
+  const _origSubmitForm = window.submitForm;
+  window.submitForm = function() {
+    localStorage.removeItem(SAVE_KEY);
+    if (_origSubmitForm) _origSubmitForm();
+  };
+</script>
+</body>
+</html>

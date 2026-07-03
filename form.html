@@ -128,6 +128,10 @@
       position: relative;
       width: 100%;
     }
+    /* スマホ：各行の最後のステップ（4番・8番）の右に伸びる線を消す */
+    .progress-row > .progress-step:last-child::after {
+      display: none;
+    }
   }
 
   .progress-step {

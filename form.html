@@ -769,7 +769,10 @@
   }
 
   .field label .required {
-    display: none;
+    color: #C0392B;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 4px;
   }
 
   .field label .optional {
@@ -1195,6 +1198,7 @@
     .price-footer-label { font-size: 14px; }
     .price-footer-detail { font-size: 13px; }
     #priceBreakdown { font-size: 13px; }
+    .field label .required { font-size: 13px; }
     .field label .optional { font-size: 13px; }
     .field-hint { font-size: 13px; }
     .plan-sections strong { font-size: 13px; }
@@ -2142,6 +2146,7 @@
       </div>
     </div>
 
+    <div class="section-block-title" style="margin-bottom:8px;">名刺デザインの種類<span class="required">必須</span></div>
     <div class="plan-cards" id="cardDesignCards">
       <label class="plan-card" onclick="selectCard(this, 'yoko_a')">
         <input type="radio" name="card_design" value="yoko_a">
@@ -2554,10 +2559,114 @@
     }
   }
 
+
+  // ===== 必須項目チェック（共通） =====
+  // ids: [{id, label}] のうち、入力欄が空のものを集めて返す
+  function findEmptyRequired(items) {
+    const empty = [];
+    items.forEach(item => {
+      const el = document.getElementById(item.id);
+      if (!el) return;
+      // 非表示（display:none）の項目はチェック対象外
+      if (el.offsetParent === null) return;
+      if (!el.value || !el.value.trim()) {
+        empty.push(item.label);
+      }
+    });
+    return empty;
+  }
+
   function nextStep(from) {
     if (from === 1) {
       if (!selectedPlan) { alert('プランを選択してください。'); return; }
       updateStep3Fields();
+    }
+    if (from === 2 && !window.zoomMode) {
+      const items = [
+        { id: 'full_name', label: '氏名（代表者名・契約者名）' },
+        { id: 'company_name', label: '屋号・会社名' },
+        { id: 'title', label: '肩書き' },
+        { id: 'industry', label: '業種' },
+        { id: 'email_address', label: 'メールアドレス' },
+        { id: 'phone_number', label: '電話番号' },
+        { id: 'target', label: 'どんな人に向けた仕事か' },
+        { id: 'pain', label: 'その人が抱えている悩みや困りごと' },
+        { id: 'result', label: '関わることでどんな変化・結果が得られるか' },
+        { id: 'base_color', label: 'ベースカラーの希望' },
+        { id: 'story', label: 'この仕事・事業を始めたきっかけ・想い' },
+        { id: 'value', label: '大切にしていること・こだわり' },
+        { id: 'strength1', label: '強み・特徴①' },
+        { id: 'strength2', label: '強み・特徴②' },
+        { id: 'strength3', label: '強み・特徴③' },
+        { id: 's1_name', label: 'サービス①　サービス名' },
+        { id: 's1_desc', label: 'サービス①　内容説明' },
+        { id: 'contact_info', label: '各連絡先（URL・アドレス・番号）' }
+      ];
+      const empty = findEmptyRequired(items);
+      const contactChecked = document.querySelector('input[name="contact_method"]:checked');
+      if (!contactChecked) empty.push('連絡手段');
+      if (empty.length) { alert('以下の必須項目が未入力です。\n\n・' + empty.join('\n・')); return; }
+    }
+    if (from === 3) {
+      let items = [];
+      let groupLabel = '';
+      if (document.getElementById('storeFields').style.display !== 'none') {
+        groupLabel = '';
+        items = [
+          { id: 'address', label: '住所' },
+          { id: 'access', label: '最寄り駅・バス停・徒歩時間' },
+          { id: 'business_hours', label: '営業時間' },
+          { id: 'holiday', label: '定休日' },
+          { id: 'reserve_contact', label: '予約URL・電話番号' }
+        ];
+      } else if (document.getElementById('nostoreFields').style.display !== 'none') {
+        items = [
+          { id: 'corp_name', label: '会社名・屋号' },
+          { id: 'rep_name2', label: '代表者名' },
+          { id: 'corp_business', label: '事業内容' },
+          { id: 'corp_contact', label: '電話番号・メールアドレス' }
+        ];
+      } else if (document.getElementById('onlineFields').style.display !== 'none') {
+        items = [
+          { id: 'date1', label: '候補①' },
+          { id: 'date2', label: '候補②' }
+        ];
+      }
+      const empty = findEmptyRequired(items);
+      if (document.getElementById('storeFields').style.display !== 'none') {
+        const reserveChecked = document.querySelector('input[name="reserve_method"]:checked');
+        if (!reserveChecked) empty.push('予約方法');
+      }
+      if (empty.length) { alert('以下の必須項目が未入力です。\n\n・' + empty.join('\n・')); return; }
+    }
+    if (from === 4) {
+      const methodChecked = window.selectedImageMethod;
+      if (!methodChecked) { alert('提出方法を選んでください。'); return; }
+      if (methodChecked === 'drive') {
+        const v = document.getElementById('drive_url').value;
+        if (!v || !v.trim()) { alert('GoogleドライブのフォルダURLを入力してください。'); return; }
+      } else if (methodChecked === 'gigafile') {
+        const v = document.getElementById('gigafile_url').value;
+        if (!v || !v.trim()) { alert('GigaFile便のダウンロードURLを入力してください。'); return; }
+      }
+    }
+    if (from === 5) {
+      const items = [
+        { id: 'hanko_corp', label: '社名（丸印・角印共通）' },
+        { id: 'fm1', label: 'フリーメイト1枚目　住所' },
+        { id: 'fm2', label: 'フリーメイト2枚目　会社名' },
+        { id: 'fm3', label: 'フリーメイト3枚目　役職・氏名' }
+      ];
+      const empty = findEmptyRequired(items);
+      const fontChecked = document.querySelector('input[name="hanko_font"]:checked');
+      if (!fontChecked) empty.push('書体');
+      const roleVal = document.getElementById('hanko_role').value;
+      if (!roleVal) empty.push('丸印の役職名');
+      if (empty.length) { alert('以下の必須項目が未入力です。\n\n・' + empty.join('\n・')); return; }
+    }
+    if (from === 6) {
+      const cardDesign = document.querySelector('input[name="card_design"]:checked');
+      if (!cardDesign) { alert('名刺デザインを選択してください。'); return; }
     }
     if (from === 7) {
       buildConfirm();
@@ -2860,6 +2969,7 @@
   }
 
   function selectImageMethod(method) {
+    window.selectedImageMethod = method;
     // カードの選択状態をリセット
     ['drive','gigafile','email'].forEach(m => {
       document.getElementById('method_card_' + m).classList.remove('selected');

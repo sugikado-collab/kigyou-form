@@ -2658,6 +2658,8 @@
         { id: 'fm3', label: 'フリーメイト3枚目　役職・氏名' }
       ];
       const empty = findEmptyRequired(items);
+      const materialVal = document.getElementById('hanko_material').value;
+      if (!materialVal) empty.push('材質');
       const fontChecked = document.querySelector('input[name="hanko_font"]:checked');
       if (!fontChecked) empty.push('書体');
       const roleVal = document.getElementById('hanko_role').value;
